@@ -7,7 +7,7 @@ import { ActivityIndicator, Alert } from "react-native";
 
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
-import MenuScreen from "./screens/MenuScreen";
+import MainMenuScreen from "./screens/MainMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 
@@ -20,8 +20,9 @@ function AuthStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      {/* <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Signup" component={SignupScreen} /> */}
+      <Stack.Screen name="MainMenu" component={MainMenuScreen} />
     </Stack.Navigator>
   );
 }
@@ -33,7 +34,7 @@ function AuthenticatedStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Menu" component={MenuScreen} />
+      <Stack.Screen name="MainMenu" component={MainMenuScreen} />
       <Stack.Screen name="Game" component={GameScreen} />
     </Stack.Navigator>
   );
