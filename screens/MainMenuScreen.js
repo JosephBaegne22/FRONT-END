@@ -1,19 +1,42 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
 import { signOut } from "../util/auth";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
 
 function MainMenuScreen({ navigation }) {
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+
   const authCtx = useContext(AuthContext);
 
 async function signOutHandler() {
   setIsSigningOut(true);
-  await signOut(authCtx);
-  setIsSigningOut(false);
+  try {
+      const res = await signOut(authCtx);
+      const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
+      setMessage(successMessage);
+    } catch (error) {
+      const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+      setError(errorMessage);
+    } finally {
+      setIsSigningOut(false);
+    }
 }
+
+useEffect(() => {
+    if (message) {
+      Alert.alert(message);
+      setMessage("");
+    }
+    if (error) {
+      Alert.alert(error);
+      setError(null);
+    }
+  }, [message, error]);
 
 if(isSigningOut){
   return <LoadingOverlay message={"Déconnexion en cours..."}></LoadingOverlay>
