@@ -6,7 +6,7 @@ function GameScreen({ navigation }) {
       <Text>Page de jeu</Text>
       <Button
         title="Quitter"
-        onPress={() => navigation.replace("Menu")}
+        onPress={() => navigation.replace("MainMenu")}
       ></Button>
     </View>
   );
