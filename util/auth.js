@@ -1,6 +1,5 @@
 import { url } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
 
 async function authenticate(endpoint, params) {
   const { username, password, secretAnswer } = params;
