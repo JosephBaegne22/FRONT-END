@@ -54,11 +54,15 @@ export async function signOut(authCtx) {
     },
   });
 
-  if (response.ok) {
-    AsyncStorage.removeItem("token");
-    authCtx.logout();
-  } else {
-    const data = await response.json();
-    Alert.alert(data.message);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(data.message || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!");
+    error.data = data;
+    throw error;
   }
+
+  AsyncStorage.removeItem("token");
+  authCtx.logout();
+  return data;
 }
