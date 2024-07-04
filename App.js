@@ -10,7 +10,6 @@ import SignupScreen from "./screens/SignupScreen";
 import MainMenuScreen from "./screens/MainMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
-import AuthGameScreen from "./screens/AuthGameScreen";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 
 const Stack = createNativeStackNavigator();
@@ -38,7 +37,7 @@ function AuthenticatedStack() {
       }}
     >
       <Stack.Screen name="MainMenu" component={MainMenuScreen} />
-      <Stack.Screen name="AuthGame" component={AuthGameScreen} />
+      <Stack.Screen name="Game" component={GameScreen} />
     </Stack.Navigator>
   );
 }
