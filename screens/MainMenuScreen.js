@@ -1,10 +1,23 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
+import { signOut } from "../util/auth";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function MainMenuScreen({ navigation }) {
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const authCtx = useContext(AuthContext);
+
+async function signOutHandler() {
+  setIsSigningOut(true);
+  await signOut(authCtx);
+  setIsSigningOut(false);
+}
+
+if(isSigningOut){
+  return <LoadingOverlay message={"Déconnexion en cours..."}></LoadingOverlay>
+}
 
   return (
     <View style={styles.rootContainer}>
@@ -52,7 +65,7 @@ function MainMenuScreen({ navigation }) {
 			
 				<Pressable 
 					style={[styles.linkButtons]}
-					onPress={() => authCtx.logout()}
+					onPress={() => signOutHandler()}
 				>
 					<Text style={[styles.linkText]}>Se déconnecter</Text>
 				</Pressable>
