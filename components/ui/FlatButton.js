@@ -5,7 +5,7 @@ import { Colors } from "../../constants/styles";
 function FlatButton({ children, onPress }) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => pressed && styles.pressed}
       onPress={onPress}
     >
       <View>
@@ -18,15 +18,11 @@ function FlatButton({ children, onPress }) {
 export default FlatButton;
 
 const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-  },
   pressed: {
-    opacity: 0.7,
+    opacity: 0.5,
   },
   buttonText: {
     textAlign: "center",
-    color: Colors.primary100,
+    color: Colors.primary300,
   },
 });
