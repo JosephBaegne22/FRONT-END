@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, ImageBackground } from "react-native";
+import { Pressable, StyleSheet, Text, View, ImageBackground, Alert } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
 import { signOut } from "../util/auth";
@@ -24,7 +24,11 @@ async function signOutHandler() {
       setError(errorMessage);
     } finally {
       setIsSigningOut(false);
-    }
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Welcome' }],
+        });
+	}
 }
 
 useEffect(() => {
