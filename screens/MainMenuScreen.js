@@ -10,44 +10,45 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
 import Button from "../components/ui/Button";
 
 function MainMenuScreen({ navigation }) {
-  const [isSigningOut, setIsSigningOut] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState(null);
+	const [isSigningOut, setIsSigningOut] = useState(false);
+	const [message, setMessage] = useState("");
+	const [error, setError] = useState(null);
 
-  	const authCtx = useContext(AuthContext);
+		const authCtx = useContext(AuthContext);
 
-async function signOutHandler() {
-  setIsSigningOut(true);
-  try {
-      const res = await signOut(authCtx);
-      const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
-      setMessage(successMessage);
-    } catch (error) {
-      const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
-      setError(errorMessage);
-    } finally {
-      setIsSigningOut(false);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Welcome' }],
-        });
+	async function signOutHandler() {
+		setIsSigningOut(true);
+		try {
+				const res = await signOut(authCtx);
+				const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
+				setMessage(successMessage);
+			} catch (error) {
+				const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+				setError(errorMessage);
+			} finally {
+				setIsSigningOut(false);
+				navigation.reset({
+				index: 0,
+				routes: [{ name: 'Welcome' }],
+			});
+		}
 	}
-}
 
-useEffect(() => {
-    if (message) {
-      Alert.alert(message);
-      setMessage("");
-    }
-    if (error) {
-      Alert.alert(error);
-      setError(null);
-    }
-  }, [message, error]);
+	useEffect(() => {
+		if (message) {
+			Alert.alert(message);
+			setMessage("");
+		}
+		if (error) {
+			Alert.alert(error);
+			setError(null);
+		}
+	}, [message, error]);
 
-if(isSigningOut){
-  return <LoadingOverlay message={"Déconnexion en cours..."}></LoadingOverlay>
-}
+	if(isSigningOut){
+		return <LoadingOverlay message={"Déconnexion en cours..."}></LoadingOverlay>
+	}
+
 	var userName = "";
 	if (authCtx.user)
 	{
@@ -66,11 +67,15 @@ if(isSigningOut){
 						<Button
 							children="Statistiques"
 							left={true}
+							size={styles.mainButtonsSize}
+							text={styles.buttonText}
 							onPress={() => navigation.replace("Stats")}
 						></Button>
 						<Button
 							children= "Paramètres"
 							left={false}
+							size={styles.mainButtonsSize}
+							text={styles.buttonText}
 							onPress={() => navigation.replace("Settings")}
 						></Button>
 					</View>
@@ -84,11 +89,15 @@ if(isSigningOut){
 						<Button
 							children="Mode manuel"
 							left={true}
+							size={styles.mainButtonsSize}
+							text={styles.buttonText}
 							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
 						></Button>
 						<Button
 							children="Mode automatique"
 							left={false}
+							size={styles.mainButtonsSize}
+							text={styles.buttonText}
 							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
 						></Button>
 					</View>
@@ -145,10 +154,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: Sizes.full,
 	},
-	mainButtons: {
+	mainButtonsSize: {
 		borderRadius: Sizes.S,
-		backgroundColor: "#B1B1B1",
 		padding: Sizes.S,
+	},
+	buttonText: {
+		fontSize: Sizes.M,
 	},
 	linkButtons: {
 		alignSelf: "flex-end",

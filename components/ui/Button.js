@@ -17,9 +17,7 @@ export default Button;
 
 const styles = StyleSheet.create({
 	button: {
-		borderRadius: Sizes.S,
 		backgroundColor: Colors.buttonGrey,
-		padding: Sizes.S,
 	},
 	leftButton: {
 		marginRight: Sizes.L,
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		textAlign: "center",
-		fontSize: Sizes.M,
 		fontWeight: "bold",
 	},
 });

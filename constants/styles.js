@@ -18,4 +18,4 @@ export const Sizes = {
 	XL: 24,
 	XXL: 32,
 	full: "100%",
-}
+};

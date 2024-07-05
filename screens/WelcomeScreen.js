@@ -12,8 +12,12 @@ function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.contentStyle}>
-        <Button text={styles.buttonText} size={styles.buttonSize} onPress={() => navigation.replace("MainMenu")}>
-          Invité
+        <Button 
+			children="Invité"
+			left={false}
+			text={styles.buttonText} 
+			size={styles.buttonSize} 
+			onPress={() => navigation.replace("MainMenu")}>
         </Button>
         <SwitchLink
           question={"Vous avez un compte ? "}
