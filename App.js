@@ -22,6 +22,7 @@ function AuthStack() {
     >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="MainMenu" component={MainMenuScreen} />
     </Stack.Navigator>
   );
 }
@@ -33,7 +34,7 @@ function AuthenticatedStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="MainMenu" component={MainMenuScreen} />
+      <Stack.Screen name="AuthMainMenu" component={MainMenuScreen} />
       <Stack.Screen name="Game" component={GameScreen} />
     </Stack.Navigator>
   );

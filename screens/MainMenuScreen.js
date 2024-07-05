@@ -1,65 +1,68 @@
 import { useContext } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground } from "react-native";
 
+import { Colors, BackgroundImage, Sizes } from "../constants/styles";
+
 import { AuthContext } from "../store/auth-context";
+import Button from "../components/ui/Button";
 
 function MainMenuScreen({ navigation }) {
-  const authCtx = useContext(AuthContext);
+  	const authCtx = useContext(AuthContext);
+	var userName = "";
+	if (authCtx.user)
+	{
+		userName = (authCtx.user.username ?? " " + authCtx.user.username);
+	}
+	return (
+		<View style={styles.rootContainer}>
+			<ImageBackground source={BackgroundImage} resizeMode="cover" style={styles.generalContainer}>
+				<View style={styles.menuContainer}>
+					<Text style={styles.title}>Bonjour{userName} !</Text>
+					<View
+					style={[
+						styles.buttonContainer
+					]}
+					>
+						<Button
+							children="Statistiques"
+							left={true}
+							onPress={() => navigation.replace("Stats")}
+						></Button>
+						<Button
+							children= "Paramètres"
+							left={false}
+							onPress={() => navigation.replace("Settings")}
+						></Button>
+					</View>
 
-  return (
-    <View style={styles.rootContainer}>
-		<ImageBackground source={"https://cloudfront-eu-central-1.images.arcpublishing.com/lpguideshopping/UXTKG3TYGJFKZGOOQJGPTXXRSI.jpg"} resizeMode="cover" style={styles.generalContainer}>
-			<View style={styles.menuContainer}>
-				<Text style={styles.title}>Bonjour !</Text>
-				<View
-				style={[
-					styles.buttonContainer
-				]}
-				>
-					<Pressable
-						style={[styles.leftButtons, styles.mainButtons]}
-						onPress={() => navigation.replace("Stats")}
+					<Text style={styles.subTitle}>Nouvelle course</Text>
+					<View
+					style={[
+						styles.buttonContainer
+					]}
 					>
-						<Text>Statistiques</Text>
-					</Pressable>
-					<Pressable
-						style={[styles.mainButtons]}
-						onPress={() => navigation.replace("Settings")}
+						<Button
+							children="Mode manuel"
+							left={true}
+							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
+						></Button>
+						<Button
+							children="Mode automatique"
+							left={false}
+							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
+						></Button>
+					</View>
+				
+					<Pressable 
+						style={[styles.linkButtons]}
+						onPress={() => authCtx.logout()}
 					>
-						<Text>Paramètres</Text>
+						<Text style={[styles.linkText]}>Se déconnecter</Text>
 					</Pressable>
 				</View>
-
-				<Text style={styles.subTitle}>Nouvelle course</Text>
-				<View
-				style={[
-					styles.buttonContainer
-				]}
-				>
-					<Pressable
-						style={[styles.leftButtons, styles.mainButtons]}
-						onPress={() => navigation.replace("Game")}
-					>
-						<Text>Mode manuel</Text>
-					</Pressable>
-					<Pressable
-						style={[styles.mainButtons]}
-						onPress={() => navigation.replace("Game")}
-					>
-						<Text>Mode automatique</Text>
-					</Pressable>
-				</View>
-			
-				<Pressable 
-					style={[styles.linkButtons]}
-					onPress={() => authCtx.logout()}
-				>
-					<Text style={[styles.linkText]}>Se déconnecter</Text>
-				</Pressable>
-			</View>
-		</ImageBackground>
-    </View>
-  );
+			</ImageBackground>
+		</View>
+	);
 }
 
 export default MainMenuScreen;
@@ -67,53 +70,45 @@ export default MainMenuScreen;
 const styles = StyleSheet.create({
 	rootContainer: {
 		flex: 1,
-		height: "100%",
+		height: Sizes.full,
 	},
 	generalContainer: {
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		padding: 32,
-		height: "100%",
+		padding: Sizes.XXL,
+		height: Sizes.full,
 	},
 	menuContainer: {
-		backgroundColor: "rgba(0, 0, 0, 0.8)",
-		padding: 20,
-		borderRadius: 8,
+		backgroundColor: Colors.menuTransparentBlack,
+		padding: Sizes.L,
+		borderRadius: Sizes.S,
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	title: {
-		fontSize: 24,
+		fontSize: Sizes.XL,
 		fontWeight: "bold",
-		marginBottom: 8,
+		marginBottom: Sizes.S,
 		color: "white",
 	},
 	subTitle: {
-		fontSize: 20,
+		fontSize: Sizes.L,
 		fontWeight: "bold",
-		marginBottom: 8,
+		marginBottom: Sizes.S,
 		color: "white",
 	},
 	buttonContainer: {
-		marginTop: 20,
-		marginBottom: 20,
+		marginTop: Sizes.L,
+		marginBottom: Sizes.L,
 		justifyContent: "space-between",
 		flexDirection: "row",
-		width: "100%",
+		width: Sizes.full,
 	},
 	mainButtons: {
-		borderRadius: 8,
+		borderRadius: Sizes.S,
 		backgroundColor: "#B1B1B1",
-		padding: 8,
-	},
-	leftButtons: {
-		marginRight: 20,
-	},
-	mainButtons: {
-		borderRadius: 8,
-		backgroundColor: "#B1B1B1",
-		padding: 8,
+		padding: Sizes.S,
 	},
 	linkButtons: {
 		alignSelf: "flex-end",
