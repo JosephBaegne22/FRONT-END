@@ -5,70 +5,88 @@ import { useNavigation } from "@react-navigation/native";
 import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
 import { Colors } from "../../constants/styles";
+import SwitchLink from "../ui/SwitchLink";
+import IconButton from "../ui/IconButton";
 
-function AuthContent({ isLogin, onAuthenticate, title, style }) {
+function AuthContent({ isLogin, isResetPwd, onAuthenticate, title, style }) {
   const navigation = useNavigation();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
-    email: false,
+    username: false,
     password: false,
-    confirmEmail: false,
     confirmPassword: false,
   });
 
-  function switchAuthModeHandler() {
-    if (isLogin) {
-      navigation.replace("Signup");
-    } else {
-      navigation.replace("Login");
-    }
-  }
-
   function submitHandler(credentials) {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+    let { username, secretAnswer, password, confirmPassword } = credentials;
 
-    email = email.trim();
+    username = username.trim();
     password = password.trim();
 
-    const emailIsValid = email.includes("@");
-    const passwordIsValid = password.length > 6;
-    const emailsAreEqual = email === confirmEmail;
+    const usernameIsValid = username.length >= 4;
+    const passwordIsValid = password.length > 7;
     const passwordsAreEqual = password === confirmPassword;
 
     if (
-      !emailIsValid ||
+      !usernameIsValid ||
       !passwordIsValid ||
-      (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+      (!isLogin && !passwordsAreEqual)
     ) {
       Alert.alert(
         "Entrée invalide, veuillez vérifier les informations que vous avez saisies."
       );
       setCredentialsInvalid({
-        email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
+        username: !usernameIsValid,
         password: !passwordIsValid,
         confirmPassword: !passwordIsValid || !passwordsAreEqual,
       });
       return;
     }
-    onAuthenticate({ email, password });
+    onAuthenticate({ username, password, secretAnswer });
   }
 
   return (
     <View style={[styles.authContent, style]}>
+      {(isLogin || isResetPwd) && (
+        <IconButton
+          icon={"arrow-back"}
+          color={Colors.primary300}
+          size={32}
+          onPress={() =>
+            isResetPwd ? navigation.replace("Login") : navigation.goBack()
+          }
+          isResetPwd={isResetPwd}
+        ></IconButton>
+      )}
       <Text style={styles.title}>{title}</Text>
       <AuthForm
         isLogin={isLogin}
         onSubmit={submitHandler}
         credentialsInvalid={credentialsInvalid}
+        isResetPwd={isResetPwd}
       />
-      <View style={styles.buttons}>
-        <FlatButton onPress={switchAuthModeHandler}>
-          {isLogin
-            ? "Vous n'avez pas de compte ? Inscrivez-vous"
-            : "Vous avez un compte ? Connectez-vous"}
-        </FlatButton>
-      </View>
+      {isLogin ? (
+        <>
+          <FlatButton
+            onPress={() => navigation.replace("Signup", { resetPwd: true })}
+          >
+            Mot de passe oublié ?
+          </FlatButton>
+          <SwitchLink
+            question={"Vous n'avez pas de compte ? "}
+            link={"Inscrivez-vous"}
+            onPress={() => navigation.replace("Signup")}
+          ></SwitchLink>
+        </>
+      ) : (
+        !isResetPwd && (
+          <SwitchLink
+            question={"Vous avez un compte ? "}
+            link={"Connectez-vous"}
+            onPress={() => navigation.replace("Login")}
+          ></SwitchLink>
+        )
+      )}
     </View>
   );
 }
@@ -79,12 +97,8 @@ const styles = StyleSheet.create({
   authContent: {
     flex: 1,
     paddingHorizontal: 64,
-    paddingTop: 64,
     backgroundColor: Colors.primary800,
     elevation: 2,
-  },
-  buttons: {
-    marginTop: 8,
   },
   title: {
     color: "white",
