@@ -24,10 +24,6 @@ async function signOutHandler() {
       setError(errorMessage);
     } finally {
       setIsSigningOut(false);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Welcome' }],
-        });
 	}
 }
 
@@ -78,13 +74,13 @@ if(isSigningOut){
 				>
 					<Pressable
 						style={[styles.leftButtons, styles.mainButtons]}
-						onPress={() => navigation.replace("Game")}
+						onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 					>
 						<Text>Mode manuel</Text>
 					</Pressable>
 					<Pressable
 						style={[styles.mainButtons]}
-						onPress={() => navigation.replace("Game")}
+						onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 					>
 						<Text>Mode automatique</Text>
 					</Pressable>
