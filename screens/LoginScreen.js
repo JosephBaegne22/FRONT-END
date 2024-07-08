@@ -23,7 +23,7 @@ function LoginScreen() {
       authCtx.authenticate(token);
 
       const successMessage =
-        SUCCESS_MESSAGES["USER_LOGGED_IN"] || "Connexion réussie !";
+        SUCCESS_MESSAGES[data.message] || "Connexion réussie !";
       setMessage(successMessage);
     } catch (error) {
       const errorMessage =
