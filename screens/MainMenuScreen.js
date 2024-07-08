@@ -91,14 +91,14 @@ function MainMenuScreen({ navigation }) {
 							left={true}
 							size={styles.mainButtonsSize}
 							text={styles.buttonText}
-							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
+							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 						></Button>
 						<Button
 							children="Mode automatique"
 							left={false}
 							size={styles.mainButtonsSize}
 							text={styles.buttonText}
-							onPress={() => navigation.replace(userName === "" ? "Game" : "AuthGame")}
+							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 						></Button>
 					</View>
 				

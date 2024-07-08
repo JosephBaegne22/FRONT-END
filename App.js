@@ -37,8 +37,8 @@ function AuthenticatedStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="AuthMainMenu" component={MainMenuScreen} />
-      <Stack.Screen name="Game" component={GameScreen} />
+      <Stack.Screen name="MainAuthMenu" component={MainMenuScreen} />
+      <Stack.Screen name="AuthGame" component={GameScreen} />
     </Stack.Navigator>
   );
 }
