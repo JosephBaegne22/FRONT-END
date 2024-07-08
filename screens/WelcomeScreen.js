@@ -13,7 +13,6 @@ function WelcomeScreen({ navigation }) {
     <View style={styles.rootContainer}>
       <View style={styles.contentStyle}>
         <Button
-			left={false}
 			text={styles.buttonText}
 			size={styles.buttonSize}
 			onPress={() => navigation.replace("MainMenu")}

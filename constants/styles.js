@@ -9,7 +9,7 @@ export const Colors = {
   buttonGrey: "#B1B1B1",
   buttonGreyPressed: "#808080",
 };
-export const BackgroundImage = "https://cloudfront-eu-central-1.images.arcpublishing.com/lpguideshopping/UXTKG3TYGJFKZGOOQJGPTXXRSI.jpg";
+export const BackgroundImage = "../assets/image_fond_menu.jpg";
 
 export const Sizes = {
 	S: 8,

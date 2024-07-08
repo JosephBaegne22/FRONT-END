@@ -56,7 +56,7 @@ function MainMenuScreen({ navigation }) {
 	}
 	return (
 		<View style={styles.rootContainer}>
-			<ImageBackground source={BackgroundImage} resizeMode="cover" style={styles.generalContainer}>
+			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={styles.generalContainer}>
 				<View style={styles.menuContainer}>
 					<Text style={styles.title}>Bonjour{userName} !</Text>
 					<View
@@ -73,7 +73,6 @@ function MainMenuScreen({ navigation }) {
 						></Button>
 						<Button
 							children= "Paramètres"
-							left={false}
 							size={styles.mainButtonsSize}
 							text={styles.buttonText}
 							onPress={() => navigation.replace("Settings")}
@@ -95,7 +94,6 @@ function MainMenuScreen({ navigation }) {
 						></Button>
 						<Button
 							children="Mode automatique"
-							left={false}
 							size={styles.mainButtonsSize}
 							text={styles.buttonText}
 							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
@@ -126,7 +124,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		padding: Sizes.XXL,
-		height: Sizes.full,
 	},
 	menuContainer: {
 		backgroundColor: Colors.menuTransparentBlack,
