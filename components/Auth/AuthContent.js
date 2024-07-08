@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View, Text } from "react-native";
+import { Alert, StyleSheet, View, Text, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
@@ -47,46 +48,48 @@ function AuthContent({ isLogin, isResetPwd, onAuthenticate, title, style }) {
 
   return (
     <View style={[styles.authContent, style]}>
-      {(isLogin || isResetPwd) && (
-        <IconButton
-          icon={"arrow-back"}
-          color={Colors.primary300}
-          size={32}
-          onPress={() =>
-            isResetPwd ? navigation.replace("Login") : navigation.goBack()
-          }
+      <SafeAreaView style={{ flex: 1 }}>
+        {(isLogin || isResetPwd) && (
+          <IconButton
+            icon={"arrow-back"}
+            color={Colors.primary300}
+            size={32}
+            onPress={() =>
+              isResetPwd ? navigation.replace("Login") : navigation.goBack()
+            }
+            isResetPwd={isResetPwd}
+          ></IconButton>
+        )}
+        <Text style={styles.title}>{title}</Text>
+        <AuthForm
+          isLogin={isLogin}
+          onSubmit={submitHandler}
+          credentialsInvalid={credentialsInvalid}
           isResetPwd={isResetPwd}
-        ></IconButton>
-      )}
-      <Text style={styles.title}>{title}</Text>
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={submitHandler}
-        credentialsInvalid={credentialsInvalid}
-        isResetPwd={isResetPwd}
-      />
-      {isLogin ? (
-        <>
-          <FlatButton
-            onPress={() => navigation.replace("Signup", { resetPwd: true })}
-          >
-            Mot de passe oublié ?
-          </FlatButton>
-          <SwitchLink
-            question={"Vous n'avez pas de compte ? "}
-            link={"Inscrivez-vous"}
-            onPress={() => navigation.replace("Signup")}
-          ></SwitchLink>
-        </>
-      ) : (
-        !isResetPwd && (
-          <SwitchLink
-            question={"Vous avez un compte ? "}
-            link={"Connectez-vous"}
-            onPress={() => navigation.replace("Login")}
-          ></SwitchLink>
-        )
-      )}
+        />
+        {isLogin ? (
+          <>
+            <FlatButton
+              onPress={() => navigation.replace("Signup", { resetPwd: true })}
+            >
+              Mot de passe oublié ?
+            </FlatButton>
+            <SwitchLink
+              question={"Vous n'avez pas de compte ? "}
+              link={"Inscrivez-vous"}
+              onPress={() => navigation.replace("Signup")}
+            ></SwitchLink>
+          </>
+        ) : (
+          !isResetPwd && (
+            <SwitchLink
+              question={"Vous avez un compte ? "}
+              link={"Connectez-vous"}
+              onPress={() => navigation.replace("Login")}
+            ></SwitchLink>
+          )
+        )}
+      </SafeAreaView>
     </View>
   );
 }
@@ -96,7 +99,7 @@ export default AuthContent;
 const styles = StyleSheet.create({
   authContent: {
     flex: 1,
-    paddingHorizontal: 64,
+    paddingHorizontal: Platform.OS === "android" ? 64 : 8,
     backgroundColor: Colors.primary800,
     elevation: 2,
   },
