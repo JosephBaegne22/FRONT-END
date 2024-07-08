@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Alert } from "react-native";
+import { Alert, Dimensions } from "react-native";
 
 import AuthContent from "../components/auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
@@ -13,6 +13,7 @@ function LoginScreen() {
   const [error, setError] = useState(null);
 
   const authCtx = useContext(AuthContext);
+  const deviceHeight = Dimensions.get("window").height;
 
   async function loginHandler({ username, password }) {
     setIsAuthenticating(true);
@@ -54,7 +55,7 @@ function LoginScreen() {
       isLogin
       onAuthenticate={loginHandler}
       title="Merci de vous connecter"
-      style={{ paddingTop: 16 }}
+      style={{ paddingTop: deviceHeight > 400 ? 12 : 32 }}
     />
   );
 }
