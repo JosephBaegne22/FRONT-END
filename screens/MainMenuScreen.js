@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Colors, BackgroundImage, Sizes } from "../constants/styles";
+import { Colors, Sizes } from "../constants/styles";
 
 import { AuthContext } from "../store/auth-context";
 import { signOut } from "../util/auth";
