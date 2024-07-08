@@ -15,49 +15,28 @@ function Button({ children, onPress, size, text , left }) {
 
 export default Button;
 
-// const styles = StyleSheet.create({
-// 	button: {
-// 		backgroundColor: Colors.buttonGrey,
-// 	},
-// 	leftButton: {
-// 		marginRight: Sizes.L,
-// 	},
-// 	pressed: {
-// 		backgroundColor: Colors.buttonGreyPressed,
-// 		elevation: 2,
-// 		shadowColor: "black",
-// 		shadowOffset: { width: 1, height: 1 },
-// 		shadowOpacity: 0.25,
-// 		shadowRadius: 4,
-// 	},
-// 	buttonText: {
-// 		textAlign: "center",
-// 		fontWeight: "bold",
-// 	},
-// });
-
 const styles = StyleSheet.create({
-  button: {
-    borderRadius: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    backgroundColor: Colors.primary500,
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-  },
+	button: {
+		borderRadius: Sizes.XS,
+		paddingVertical: Sizes.XS,
+		paddingHorizontal: Sizes.S,
+		backgroundColor: Colors.primary500,
+		elevation: Sizes.XXS,
+		shadowColor: "black",
+		shadowOffset: { width: 1, height: 1 },
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+	},
 	leftButton: {
 		marginRight: Sizes.L,
 	},
-  pressed: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
+	pressed: {
+		opacity: 0.7,
+	},
+	buttonText: {
+		textAlign: "center",
+		color: "white",
+		fontSize: 16,
+		fontWeight: "bold",
+	},
 });

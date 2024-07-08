@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors, BackgroundImage, Sizes } from "../constants/styles";
 
@@ -8,29 +9,26 @@ import { signOut } from "../util/auth";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
 import Button from "../components/ui/Button";
+import FlatButton from "../components/ui/FlatButton";
 
 function MainMenuScreen({ navigation }) {
 	const [isSigningOut, setIsSigningOut] = useState(false);
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState(null);
 
-		const authCtx = useContext(AuthContext);
+	const authCtx = useContext(AuthContext);
 
 	async function signOutHandler() {
 		setIsSigningOut(true);
 		try {
-				const res = await signOut(authCtx);
-				const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
-				setMessage(successMessage);
-			} catch (error) {
-				const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
-				setError(errorMessage);
-			} finally {
-				setIsSigningOut(false);
-				navigation.reset({
-				index: 0,
-				routes: [{ name: 'Welcome' }],
-			});
+			const res = await signOut(authCtx);
+			const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
+			setMessage(successMessage);
+		} catch (error) {
+			const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+			setError(errorMessage);
+		} finally {
+			setIsSigningOut(false);
 		}
 	}
 
@@ -56,57 +54,62 @@ function MainMenuScreen({ navigation }) {
 	}
 	return (
 		<View style={styles.rootContainer}>
-			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={styles.generalContainer}>
-				<View style={styles.menuContainer}>
-					<Text style={styles.title}>Bonjour{userName} !</Text>
-					<View
-					style={[
-						styles.buttonContainer
-					]}
-					>
-						<Button
-							children="Statistiques"
-							left={true}
-							size={styles.mainButtonsSize}
-							text={styles.buttonText}
-							onPress={() => navigation.replace("Stats")}
-						></Button>
-						<Button
-							children= "Paramètres"
-							size={styles.mainButtonsSize}
-							text={styles.buttonText}
-							onPress={() => navigation.replace("Settings")}
-						></Button>
-					</View>
+			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={styles.backgroundImage}>
+				<SafeAreaView style={styles.generalContainer}>
+					<View style={styles.menuContainer}>
+						<Text style={styles.title}>Bonjour{userName} !</Text>
+						<View
+						style={[
+							styles.buttonContainer
+						]}
+						>
+							<Button
+								left={true}
+								size={styles.mainButtonsSize}
+								text={styles.buttonText}
+								onPress={() => navigation.replace("Stats")}
+							>
+								Statistiques
+							</Button>
+							<Button
+								size={styles.mainButtonsSize}
+								text={styles.buttonText}
+								onPress={() => navigation.replace("Settings")}
+							>
+								Paramètres
+							</Button>
+						</View>
 
-					<Text style={styles.subTitle}>Nouvelle course</Text>
-					<View
-					style={[
-						styles.buttonContainer
-					]}
-					>
-						<Button
-							children="Mode manuel"
-							left={true}
-							size={styles.mainButtonsSize}
-							text={styles.buttonText}
-							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
-						></Button>
-						<Button
-							children="Mode automatique"
-							size={styles.mainButtonsSize}
-							text={styles.buttonText}
-							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
-						></Button>
+						<Text style={styles.subTitle}>Nouvelle course</Text>
+						<View
+						style={[
+							styles.buttonContainer
+						]}
+						>
+							<Button
+								left={true}
+								size={styles.mainButtonsSize}
+								text={styles.buttonText}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+							>
+								Mode manuel
+							</Button>
+							<Button
+								size={styles.mainButtonsSize}
+								text={styles.buttonText}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+							>
+								Mode automatique
+							</Button>
+						</View>
+					
+						<FlatButton 
+							onPress={() => authCtx.isAuthenticated ? signOutHandler() : navigation.replace("Welcome")}
+						>
+							{authCtx.isAuthenticated ? "Se déconnecter" : "Retour à la page de connexion"}
+						</FlatButton>
 					</View>
-				
-					<Pressable 
-						style={[styles.linkButtons]}
-						onPress={() => signOutHandler()}
-					>
-						<Text style={[styles.linkText]}>Se déconnecter</Text>
-					</Pressable>
-				</View>
+				</SafeAreaView>
 			</ImageBackground>
 		</View>
 	);
@@ -118,6 +121,9 @@ const styles = StyleSheet.create({
 	rootContainer: {
 		flex: 1,
 		height: Sizes.full,
+	},
+	backgroundImage: {
+		flex: 1,
 	},
 	generalContainer: {
 		flex: 1,
@@ -151,18 +157,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: Sizes.full,
 	},
-	mainButtonsSize: {
-		borderRadius: Sizes.S,
-		padding: Sizes.S,
-	},
 	buttonText: {
 		fontSize: Sizes.M,
 	},
-	linkButtons: {
-		alignSelf: "flex-end",
-	},
-	linkText: {
-		color: "#888888",
-		textDecorationLine: "underline",
-	}
 });
