@@ -22,7 +22,10 @@ async function authenticate(endpoint, params) {
   const data = await response.json();
 
   if (!response.ok) {
-    const error = new Error(data.message || "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !");
+    const error = new Error(
+      data.message ||
+        "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !"
+    );
     error.data = data;
     throw error;
   }
@@ -56,7 +59,10 @@ export async function signOut(authCtx) {
   const data = await response.json();
 
   if (!response.ok) {
-    const error = new Error(data.message || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!");
+    const error = new Error(
+      data.message ||
+        "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!"
+    );
     error.data = data;
     throw error;
   }
