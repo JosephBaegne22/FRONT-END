@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, ImageBackground, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Colors, Sizes } from "../constants/styles";
+import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
 
 import { AuthContext } from "../store/auth-context";
 import { signOut } from "../util/auth";
@@ -53,26 +53,24 @@ function MainMenuScreen({ navigation }) {
 		userName = (authCtx.user.username ?? " " + authCtx.user.username);
 	}
 	return (
-		<View style={styles.rootContainer}>
-			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={styles.backgroundImage}>
-				<SafeAreaView style={styles.generalContainer}>
-					<View style={styles.menuContainer}>
-						<Text style={styles.title}>Bonjour{userName} !</Text>
+		<View style={FullMenuStyles.rootContainer}>
+			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={FullMenuStyles.backgroundImage}>
+				<SafeAreaView style={FullMenuStyles.generalContainer}>
+					<View style={FullMenuStyles.menuContainer}>
+						<Text style={FullMenuStyles.title}>Bonjour{userName} !</Text>
 						<View
 						style={[
-							styles.buttonContainer
+							FullMenuStyles.buttonContainer
 						]}
 						>
 							<Button
 								left={true}
-								size={styles.mainButtonsSize}
 								text={styles.buttonText}
 								onPress={() => navigation.replace("Stats")}
 							>
 								Statistiques
 							</Button>
 							<Button
-								size={styles.mainButtonsSize}
 								text={styles.buttonText}
 								onPress={() => navigation.replace("Settings")}
 							>
@@ -80,22 +78,20 @@ function MainMenuScreen({ navigation }) {
 							</Button>
 						</View>
 
-						<Text style={styles.subTitle}>Nouvelle course</Text>
+						<Text style={FullMenuStyles.subTitle}>Nouvelle course</Text>
 						<View
 						style={[
-							styles.buttonContainer
+							FullMenuStyles.buttonContainer
 						]}
 						>
 							<Button
 								left={true}
-								size={styles.mainButtonsSize}
 								text={styles.buttonText}
 								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 							>
 								Mode manuel
 							</Button>
 							<Button
-								size={styles.mainButtonsSize}
 								text={styles.buttonText}
 								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
 							>
@@ -118,45 +114,6 @@ function MainMenuScreen({ navigation }) {
 export default MainMenuScreen;
 
 const styles = StyleSheet.create({
-	rootContainer: {
-		flex: 1,
-		height: Sizes.full,
-	},
-	backgroundImage: {
-		flex: 1,
-	},
-	generalContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		padding: Sizes.XXL,
-	},
-	menuContainer: {
-		backgroundColor: Colors.menuTransparentBlack,
-		padding: Sizes.L,
-		borderRadius: Sizes.S,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	title: {
-		fontSize: Sizes.XL,
-		fontWeight: "bold",
-		marginBottom: Sizes.S,
-		color: "white",
-	},
-	subTitle: {
-		fontSize: Sizes.L,
-		fontWeight: "bold",
-		marginBottom: Sizes.S,
-		color: "white",
-	},
-	buttonContainer: {
-		marginTop: Sizes.L,
-		marginBottom: Sizes.L,
-		justifyContent: "space-between",
-		flexDirection: "row",
-		width: Sizes.full,
-	},
 	buttonText: {
 		fontSize: Sizes.M,
 	},
