@@ -20,7 +20,9 @@ function LoginScreen() {
     try {
       const data = await login(username, password);
       const token = data.payload.token;
+      const user = data.payload.user;
       authCtx.authenticate(token);
+      authCtx.getUser(user);
 
       const successMessage =
         SUCCESS_MESSAGES[data.message] || "Connexion réussie !";

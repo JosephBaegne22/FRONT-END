@@ -57,7 +57,7 @@ function MainMenuScreen({ navigation }) {
 			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={FullMenuStyles.backgroundImage}>
 				<SafeAreaView style={FullMenuStyles.generalContainer}>
 					<View style={FullMenuStyles.menuContainer}>
-						<Text style={FullMenuStyles.title}>Bonjour{userName} !</Text>
+						<Text style={FullMenuStyles.title}>Bonjour {userName} !</Text>
 						<View
 						style={[
 							FullMenuStyles.buttonContainer
