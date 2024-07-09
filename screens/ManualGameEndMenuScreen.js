@@ -26,7 +26,7 @@ function ManualGameEndMenuScreen({ navigation }) {
 			<ImageBackground source={require("../assets/image_fond_menu.jpg")} resizeMode="cover" style={FullMenuStyles.backgroundImage}>
 				<SafeAreaView style={FullMenuStyles.generalContainer}>
 					<View style={FullMenuStyles.menuContainer}>
-						<Text style={FullMenuStyles.title}>Course terminée</Text>
+						<Text style={[FullMenuStyles.title, styles.title]}>Course terminée</Text>
 						<EndGameTable
 							raceData={fakeRaceData}
 							bestData={fakeBestData}
@@ -60,5 +60,7 @@ function ManualGameEndMenuScreen({ navigation }) {
 export default ManualGameEndMenuScreen;
 
 const styles = StyleSheet.create({
-	
+	title:{
+		marginTop: Sizes.M,
+	}
 });

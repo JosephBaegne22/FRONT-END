@@ -26,57 +26,57 @@ function EndGameTable({ raceData, bestData }) {
 		<View style={styles.tableContainer}>{ /* Table container */}
 			<View style={styles.row}>{ /* One row */}
 				<View style={[styles.cell, styles.voidCell]}>{ /* One cell within the row */}
-					<Text></Text>
+					<Text style={styles.cellText}></Text>
 				</View>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text>Cette course</Text>
+					<Text style={styles.cellText}>Cette course</Text>
 				</View>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text>Record</Text>
+					<Text style={styles.cellText}>Record</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text style={{color: "white"}}>Vitesse moyenne</Text>
+					<Text style={styles.cellText}>Vitesse moyenne</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{raceData.averageSpeed} m/h</Text>
+					<Text style={styles.cellText}>{raceData.averageSpeed} m/h</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{bestData.averageSpeed} m/h</Text>
+					<Text style={styles.cellText}>{bestData.averageSpeed} m/h</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text>Vitesse maximale</Text>
+					<Text style={styles.cellText}>Vitesse maximale</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{raceData.highestSpeed} m/h</Text>
+					<Text style={styles.cellText}>{raceData.highestSpeed} m/h</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{bestData.highestSpeed} m/h</Text>
+					<Text style={styles.cellText}>{bestData.highestSpeed} m/h</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text>Durée de la course</Text>
+					<Text style={styles.cellText}>Durée de la course</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{raceTimeMinutes}min {raceTimeSeconds} s</Text>
+					<Text style={styles.cellText}>{raceTimeMinutes}min {raceTimeSeconds} s</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{bestTimeMinutes}min {bestTimeSeconds} s</Text>
+					<Text style={styles.cellText}>{bestTimeMinutes}min {bestTimeSeconds} s</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text>Nombre de chocs</Text>
+					<Text style={styles.cellText}>Nombre de chocs</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{raceData.hitCount} </Text>
+					<Text style={styles.cellText}>{raceData.hitCount} </Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text>{bestData.hitCount} </Text>
+					<Text style={styles.cellText}>{bestData.hitCount} </Text>
 				</View>
 			</View>
 		</View>
@@ -87,18 +87,15 @@ export default EndGameTable;
 
 const styles = StyleSheet.create({
 	tableContainer: {
-		flex: 1, 
-		alignItems: 'center', 
-		justifyContent: 'center'
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	row: { 
-		flex: 1, 
-		alignSelf: 'stretch', 
 		flexDirection: 'row' 
 	},
 	cell: { 
-		flex: 1, 
-		alignSelf: 'stretch', 
+		padding: Sizes.XS,
+		width: '33.3%',
 	},
 	voidCell: { 
 		opacity: 0,
@@ -106,10 +103,17 @@ const styles = StyleSheet.create({
 	titleCell: { 
 		opacity: 1,
 		backgroundColor: Colors.primary800,
+		borderStyle: 'solid',
+		borderWidth: 1,
+		borderColor: Colors.primary800,
 	},
 	valueCell: { 
 		opacity: 1,
-		border: '1px solid',
+		borderStyle: 'solid',
+		borderWidth: 1,
 		borderColor: Colors.primary800,
 	},
+	cellText: {
+		color: "white",
+	}
 });
