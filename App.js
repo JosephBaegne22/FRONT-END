@@ -9,6 +9,7 @@ import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import MainMenuScreen from "./screens/MainMenuScreen";
 import GameEndMenuScreen from "./screens/GameEndMenuScreen";
+import InGameMenuScreen from "./screens/InGameMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
@@ -27,6 +28,7 @@ function AuthStack() {
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="MainMenu" component={MainMenuScreen} />
       <Stack.Screen name="Game" component={GameScreen} />
+	  <Stack.Screen name="InGameMenu" component={InGameMenuScreen} />
       <Stack.Screen name="GameEndMenu" component={GameEndMenuScreen} />
     </Stack.Navigator>
   );
@@ -39,9 +41,10 @@ function AuthenticatedStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="MainAuthMenu" component={MainMenuScreen} />
+      <Stack.Screen name="AuthMainMenu" component={MainMenuScreen} />
       <Stack.Screen name="AuthGame" component={GameScreen} />
       <Stack.Screen name="AuthGameEndMenu" component={GameEndMenuScreen} />
+	  <Stack.Screen name="AuthInGameMenu" component={InGameMenuScreen} />
     </Stack.Navigator>
   );
 }

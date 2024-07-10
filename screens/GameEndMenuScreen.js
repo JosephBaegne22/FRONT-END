@@ -48,7 +48,7 @@ function GameEndMenuScreen({ navigation }) {
 							<Button
 								left={true}
 								text={FullMenuStyles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("MainAuthMenu") : navigation.replace("MainMenu")}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthMainMenu") : navigation.replace("MainMenu")}
 							>
 								Menu principal
 							</Button>

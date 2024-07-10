@@ -19,8 +19,8 @@ function GameScreen({ navigation }) {
           color={Colors.primary300}
           onPress={() =>
             authCtx.isAuthenticated
-              ? navigation.replace("MainAuthMenu")
-              : navigation.replace("MainMenu")
+			  ? navigation.replace("AuthInGameMenu")
+              : navigation.replace("InGameMenu")
           }
         ></IconButton>
       </View>
