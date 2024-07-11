@@ -14,11 +14,11 @@ function divisionEuclidienne(divided, divider)
 	return {minutes: quotient, seconds: rest};
 }
 
-function EndGameTable({ raceData, bestData }) {
-	const raceTimeDivision = divisionEuclidienne(raceData.raceTime, 60);
-	const raceTimeMinutes = raceTimeDivision.minutes;
-	const raceTimeSeconds = raceTimeDivision.seconds;
-	const bestTimeDivision = divisionEuclidienne(bestData.raceTime, 60);
+function StatsTable({ data }) {
+	const averageTimeDivision = divisionEuclidienne(data.average.raceTime, 60);
+	const averageTimeMinutes = averageTimeDivision.minutes;
+	const averageTimeSeconds = averageTimeDivision.seconds;
+	const bestTimeDivision = divisionEuclidienne(data.best.raceTime, 60);
 	const bestTimeMinutes = bestTimeDivision.minutes;
 	const bestTimeSeconds = bestTimeDivision.seconds;
 	return (
@@ -28,7 +28,7 @@ function EndGameTable({ raceData, bestData }) {
 					<Text style={styles.cellText}></Text>
 				</View>
 				<View style={[styles.cell, styles.titleCell]}>
-					<Text style={styles.cellText}>Cette course</Text>
+					<Text style={styles.cellText}>Moyenne</Text>
 				</View>
 				<View style={[styles.cell, styles.titleCell]}>
 					<Text style={styles.cellText}>Record</Text>
@@ -39,10 +39,10 @@ function EndGameTable({ raceData, bestData }) {
 					<Text style={styles.cellText}>Vitesse moyenne</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{raceData.averageSpeed} m/h</Text>
+					<Text style={styles.cellText}>{data.average.averageSpeed} m/h</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{bestData.averageSpeed} m/h</Text>
+					<Text style={styles.cellText}>{data.best.averageSpeed} m/h</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
@@ -50,10 +50,10 @@ function EndGameTable({ raceData, bestData }) {
 					<Text style={styles.cellText}>Vitesse maximale</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{raceData.highestSpeed} m/h</Text>
+					<Text style={styles.cellText}>{data.average.highestSpeed} m/h</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{bestData.highestSpeed} m/h</Text>
+					<Text style={styles.cellText}>{data.best.highestSpeed} m/h</Text>
 				</View>
 			</View>
 			<View style={styles.row}>
@@ -61,7 +61,7 @@ function EndGameTable({ raceData, bestData }) {
 					<Text style={styles.cellText}>Durée de la course</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{raceTimeMinutes}min {raceTimeSeconds} s</Text>
+					<Text style={styles.cellText}>{averageTimeMinutes}min {averageTimeSeconds} s</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
 					<Text style={styles.cellText}>{bestTimeMinutes}min {bestTimeSeconds} s</Text>
@@ -72,17 +72,17 @@ function EndGameTable({ raceData, bestData }) {
 					<Text style={styles.cellText}>Nombre de chocs</Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{raceData.hitCount} </Text>
+					<Text style={styles.cellText}>{data.average.hitCount} </Text>
 				</View>
 				<View style={[styles.cell, styles.valueCell]}>
-					<Text style={styles.cellText}>{bestData.hitCount} </Text>
+					<Text style={styles.cellText}>{data.best.hitCount} </Text>
 				</View>
 			</View>
 		</View>
 	);
 }
 
-export default EndGameTable;
+export default StatsTable;
 
 const styles = StyleSheet.create({
 	tableContainer: {

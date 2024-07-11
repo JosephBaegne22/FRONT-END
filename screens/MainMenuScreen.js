@@ -1,8 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, ImageBackground, Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Text, View, ImageBackground, Alert, SafeAreaView } from "react-native";
 
-import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
+import { Sizes, FullMenuStyles } from "../constants/styles";
 
 import { AuthContext } from "../store/auth-context";
 import { signOut } from "../util/auth";
@@ -66,13 +65,13 @@ function MainMenuScreen({ navigation }) {
 							<Button
 								left={true}
 								text={styles.buttonText}
-								onPress={() => navigation.replace("Stats")}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthStats") : navigation.replace("Stats")}
 							>
 								Statistiques
 							</Button>
 							<Button
 								text={styles.buttonText}
-								onPress={() => navigation.replace("Settings")}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthSettings") : navigation.replace("Settings")}
 							>
 								Paramètres
 							</Button>

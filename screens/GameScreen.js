@@ -1,7 +1,6 @@
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, SafeAreaView } from "react-native";
 import { useContext } from "react";
 import { Entypo } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";

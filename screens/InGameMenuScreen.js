@@ -1,11 +1,10 @@
 import { useContext } from "react";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
 
 import Button from "../components/ui/Button";
-import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
+import { Sizes, FullMenuStyles } from "../constants/styles";
 
 function InGameMenuScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
