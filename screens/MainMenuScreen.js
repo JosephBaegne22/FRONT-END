@@ -69,6 +69,14 @@ function MainMenuScreen({ navigation }) {
 							>
 								Statistiques
 							</Button>
+							{/* {authCtx.isAuthenticated &&
+								<Button
+									text={styles.buttonText}
+									onPress={() => navigation.replace("Settings")}
+								>
+									Paramètres
+								</Button>
+							} */}
 							<Button
 								text={styles.buttonText}
 								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthSettings") : navigation.replace("Settings")}

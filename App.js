@@ -10,6 +10,7 @@ import SignupScreen from "./screens/SignupScreen";
 import MainMenuScreen from "./screens/MainMenuScreen";
 import GameEndMenuScreen from "./screens/GameEndMenuScreen";
 import StatsScreen from "./screens/StatsScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import InGameMenuScreen from "./screens/InGameMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
@@ -32,6 +33,8 @@ function AuthStack() {
 	  <Stack.Screen name="InGameMenu" component={InGameMenuScreen} />
       <Stack.Screen name="GameEndMenu" component={GameEndMenuScreen} />
       <Stack.Screen name="Stats" component={StatsScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+	  {/* In fine, les paramètres ne seront accessibles que si l'on est connecté. Ce lien va donc disparaitre. */}
     </Stack.Navigator>
   );
 }
@@ -48,6 +51,8 @@ function AuthenticatedStack() {
 	  <Stack.Screen name="AuthInGameMenu" component={InGameMenuScreen} />
       <Stack.Screen name="AuthGameEndMenu" component={GameEndMenuScreen} />
       <Stack.Screen name="AuthStats" component={StatsScreen} />
+      <Stack.Screen name="AuthSettings" component={SettingsScreen} />
+		{/* In fine, les paramètres ne seront accessibles que si l'on est connecté. Ce lien va donc devenir simplement "Settings". */}
     </Stack.Navigator>
   );
 }
