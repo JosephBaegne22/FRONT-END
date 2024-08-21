@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Alert, StyleSheet, View, Text, Platform, SafeAreaView } from "react-native";
+import { Alert, StyleSheet, View, Text, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
@@ -56,7 +57,8 @@ function AuthContent({ isLogin, isResetPwd, onAuthenticate, title, style }) {
             onPress={() =>
               isResetPwd ? navigation.replace("Login") : navigation.goBack()
             }
-            isResetPwd={isResetPwd}
+            style={{ marginBottom: isResetPwd ? 12 : 28 }}
+            library={"Ionicons"}
           ></IconButton>
         )}
         <Text style={styles.title}>{title}</Text>
