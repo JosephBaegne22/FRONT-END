@@ -1,13 +1,19 @@
 import { Pressable, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 
-function IconButton({ icon, color, size, onPress, isResetPwd }) {
+const iconLibraries = {
+  Ionicons: Ionicons,
+  Entypo: Entypo,
+};
+
+function IconButton({ icon, color, size, onPress, style, library }) {
+  const IconComponent = iconLibraries[library];
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed, { marginBottom: isResetPwd ? 12 : 28 }]}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
       onPress={onPress}
     >
-      <Ionicons name={icon} color={color} size={size} />
+      {IconComponent && <IconComponent name={icon} color={color} size={size} />}
     </Pressable>
   );
 }
