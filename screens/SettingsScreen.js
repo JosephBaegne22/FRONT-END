@@ -55,6 +55,7 @@ function SettingsScreen({ navigation }) {
 									color={Colors.primary300}
 									size={32}
 									onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthMainMenu") : navigation.replace("MainMenu")}
+									library={"Ionicons"}
 								/>
 							</View>
 							<Text style={[FullMenuStyles.title]}>Paramètres</Text>

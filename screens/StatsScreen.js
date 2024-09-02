@@ -5,7 +5,6 @@ import IconButton from "../components/ui/IconButton";
 import { AuthContext } from "../store/auth-context";
 import StatsTable from "../components/tables/StatsTable";
 import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
-import { Ionicons } from "@expo/vector-icons";
 
 function StatsScreen({ navigation }) {
   	const authCtx = useContext(AuthContext);
