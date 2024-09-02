@@ -1,16 +1,60 @@
-import { StyleSheet, View, Image, Pressable, Platform } from "react-native";
+import { StyleSheet, View, Image, Pressable, Platform, Dimensions } from "react-native";
 import { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
+import { getSocket } from "../util/websocket";
+import { VIDEO_URL } from "@env";
 
 function GameScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
+  const socket = getSocket();
+
+  const sendCommand = (command) => {
+    socket.emit("car-control", command);
+  };
+
+  useEffect(() => {
+    // Activer le flux vidéo
+    sendCommand({ cmd: 9, data: 1 });
+
+    return () => {
+      // Désactiver le flux vidéo
+      sendCommand({ cmd: 9, data: 0 });
+    };
+  }, [socket]);
+
+  const handleForward = () => {
+    sendCommand({ cmd: 1, data: [2000, 2000, 2000, 2000] });
+  };
+
+  const handleBackward = () => {
+    sendCommand({ cmd: 1, data: [-2000, -2000, -2000, -2000] });
+  };
+
+  const handleLeft = () => {
+    sendCommand({ cmd: 1, data: [-1000, 1000, -1000, 1000] });
+  };
+
+  const handleRight = () => {
+    sendCommand({ cmd: 1, data: [1000, -1000, 1000, -1000] });
+  };
+
+  const handleBrake = () => {
+    sendCommand({ cmd: 1, data: [0, 0, 0, 0] });
+  };
 
   return (
     <SafeAreaView style={styles.rootContainer}>
+      <Video
+        source={{ uri: VIDEO_URL }}
+        style={styles.backgroundVideo}
+        resizeMode="cover"
+        repeat={true}
+        muted={true}
+      />
       <View style={styles.settingButton}>
         <IconButton
           icon={"settings-sharp"}
@@ -31,12 +75,14 @@ function GameScreen({ navigation }) {
               icon={"arrow-left"}
               size={80}
               color={Colors.primary300}
+              onPress={handleLeft}
               library={"Entypo"}
             ></IconButton>
             <IconButton
               icon={"arrow-right"}
               size={80}
               color={Colors.primary300}
+              onPress={handleRight}
               library={"Entypo"}
             ></IconButton>
           </View>
@@ -55,12 +101,14 @@ function GameScreen({ navigation }) {
               icon={"arrow-up"}
               size={80}
               color={Colors.primary300}
+              onPress={handleForward}
               library={"Entypo"}
             ></IconButton>
             <IconButton
               icon={"arrow-down"}
               size={80}
               color={Colors.primary300}
+              onPress={handleBackward}
               library={"Entypo"}
             ></IconButton>
           </View>
@@ -69,6 +117,7 @@ function GameScreen({ navigation }) {
               { flex: 1, justifyContent: "center", paddingLeft: 10 },
               pressed && styles.pressed,
             ]}
+            onPress={handleBrake}
           >
             <Image
               style={styles.brakeImage}
@@ -118,5 +167,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginRight: 20,
     marginTop: 10,
+  },
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
