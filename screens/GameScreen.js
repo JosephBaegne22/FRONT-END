@@ -1,6 +1,7 @@
-import { StyleSheet, View, Image, Pressable, Platform, Dimensions } from "react-native";
-import { useContext } from "react";
+import { StyleSheet, View, Image, Pressable, Platform } from "react-native";
+import { useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Video from "react-native-video";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
@@ -48,13 +49,13 @@ function GameScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <Video
+      {/* <Video
         source={{ uri: VIDEO_URL }}
         style={styles.backgroundVideo}
         resizeMode="cover"
         repeat={true}
         muted={true}
-      />
+      />*/}
       <View style={styles.settingButton}>
         <IconButton
           icon={"settings-sharp"}
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 10,
   },
-  backgroundVideo: {
+  /*backgroundVideo: {
     position: "absolute",
     top: 0,
     left: 0,
@@ -176,5 +177,5 @@ const styles = StyleSheet.create({
     right: 0,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
-  },
+  },*/
 });
