@@ -30,7 +30,7 @@ function SettingsForm({ onSubmit, credentialsInvalid }) {
 			<View style={styles.inputLayout}>
 				<View style={styles.inputContainer}>
 					<Input
-						label="Nom d'utilisateur"
+						label="Nouveau nom d'utilisateur"
 						onUpdateValue={setEnteredUsername}
 						value={enteredUsername}
 						isInvalid={usernameIsInvalid}
@@ -45,7 +45,7 @@ function SettingsForm({ onSubmit, credentialsInvalid }) {
 						isInvalid={passwordIsInvalid}
 					/>
 					<Input
-						label="Confirmez le mot de passe"
+						label="Confirmez le nouveau mot de passe"
 						onUpdateValue={setEnteredConfirmPassword}
 						secure
 						value={enteredConfirmPassword}
@@ -73,14 +73,13 @@ export default SettingsForm;
 
 const styles = StyleSheet.create({
   buttons: {
-    marginTop: 12,
+    marginTop: 8,
     marginHorizontal: 24,
   },
   inputLayout: {
     flexDirection: "column",
   },
   inputContainer: {
-    flex: 1,
 	flexDirection: "row",
   },
   form: {
