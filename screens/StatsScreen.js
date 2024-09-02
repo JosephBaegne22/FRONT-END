@@ -5,6 +5,7 @@ import IconButton from "../components/ui/IconButton";
 import { AuthContext } from "../store/auth-context";
 import StatsTable from "../components/tables/StatsTable";
 import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
+import { Ionicons } from "@expo/vector-icons";
 
 function StatsScreen({ navigation }) {
   	const authCtx = useContext(AuthContext);
@@ -40,6 +41,7 @@ function StatsScreen({ navigation }) {
 									color={Colors.primary300}
 									size={32}
 									onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthMainMenu") : navigation.replace("MainMenu")}
+									library={"Ionicons"}
 								/>
 							</View>
 							<Text style={[FullMenuStyles.title]}>Statistiques</Text>
