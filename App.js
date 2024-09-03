@@ -15,7 +15,7 @@ import InGameMenuScreen from "./screens/InGameMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
-import { initSocket, getSocket } from "./util/websocket";
+import { initSocket, closeSocket } from "./util/websocket";
 
 const Stack = createNativeStackNavigator();
 
@@ -103,10 +103,7 @@ export default function App() {
   useEffect(() => {
     initSocket();
     return () => {
-      const socket = getSocket();
-      if (socket) {
-        socket.disconnect();
-      }
+      closeSocket();
     };
   }, []);
   return (
