@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 
-import { Colors } from "../constants/styles";
+import { Colors, Sizes } from "../constants/styles";
 import Button from "../components/ui/Button";
 import SwitchLink from "../components/ui/SwitchLink";
 
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
   },
   buttonSize: {
     marginHorizontal: 360,
-    paddingVertical: 12,
+    paddingVertical: Sizes.S,
+    paddingHorizontal: Sizes.M,
     marginBottom: 20,
   },
   contentStyle: {
