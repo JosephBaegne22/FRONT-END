@@ -7,7 +7,7 @@ import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
 import { getSocket } from "../util/websocket";
-//import { VIDEO_URL } from "@env";
+import { VIDEO_URL } from "@env";
 
 function GameScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
