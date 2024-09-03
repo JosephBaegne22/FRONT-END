@@ -1,20 +1,21 @@
 import { StyleSheet, View, Image, Pressable, Platform } from "react-native";
 import { useContext, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Video from "react-native-video";
+//import Video from "react-native-video";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
 import { getSocket } from "../util/websocket";
-import { VIDEO_URL } from "@env";
+//import { VIDEO_URL } from "@env";
 
 function GameScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
 
   const sendCommand = (command) => {
-    socket.emit("car-control", command);
+    //socket.emit("car-control", command);
+    socket.send(JSON.stringify(command))
   };
 
   useEffect(() => {
@@ -36,11 +37,11 @@ function GameScreen({ navigation }) {
   };
 
   const handleLeft = () => {
-    sendCommand({ cmd: 1, data: [-1000, 1000, -1000, 1000] });
+    sendCommand({ cmd: 1, data: [0, 0, 4000, 4000] });
   };
 
   const handleRight = () => {
-    sendCommand({ cmd: 1, data: [1000, -1000, 1000, -1000] });
+    sendCommand({ cmd: 1, data: [4000, 4000, 0, 0] });
   };
 
   const handleBrake = () => {
