@@ -1,4 +1,5 @@
 import { SOCKET_SERVER_URL } from "@env";
+import { Alert } from "react-native";
 
 let socket;
 
@@ -22,7 +23,11 @@ socket.addEventListener("close", event => {
 
 // Handle errors
 socket.addEventListener("error", event => {
-  console.error("WebSocket error", event);
+  console.log("WebSocket error", event);
+  Alert.alert(
+    "Erreur de connexion",
+    "Nous avons rencontré un problème de connexion au serveur. Veuillez vérifier votre connexion Internet ou réessayer plus tard."
+  );
 });
 };
 
