@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Video } from "expo-av";
+import { WebView } from "react-native-webview";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
@@ -86,13 +86,9 @@ function GameScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <Video
-        key={VIDEO_URL}
+      <WebView
         source={{ uri: VIDEO_URL }}
-        style={styles.backgroundVideo}
-        resizeMode="cover"
-        shouldPlay={true}
-        isMuted={false}
+        style={styles.backgroundWebView}
       />
       <View style={styles.settingButton}>
         <IconButton
@@ -207,7 +203,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 10,
   },
-  backgroundVideo: {
+  backgroundWebView: {
     position: "absolute",
     top: 0,
     left: 0,
