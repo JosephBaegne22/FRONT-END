@@ -6,7 +6,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Video } from "expo-av";
 
@@ -17,20 +17,50 @@ import { getSocket } from "../util/websocket";
 import { VIDEO_URL } from "@env";
 
 function GameScreen({ navigation }) {
+  const [isSocketReady, setIsSocketReady] = useState(false);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
 
   const sendCommand = (command) => {
-    socket.send(JSON.stringify(command));
+    if (isSocketReady) {
+      socket.send(JSON.stringify(command));
+    } else {
+      console.log("Socket not ready, command not sent:", command);
+    }
   };
 
   useEffect(() => {
     // Activer le flux vidéo
-    sendCommand({ cmd: 9, data: 1 });
+    if (isSocketReady) {
+      sendCommand({ cmd: 9, data: 1 });
+    }
 
     return () => {
       // Désactiver le flux vidéo
-      sendCommand({ cmd: 9, data: 0 });
+      if (isSocketReady) {
+        sendCommand({ cmd: 9, data: 0 });
+      }
+    };
+  }, [isSocketReady]);
+
+  useEffect(() => {
+    // Vérifier que la connexion est prête
+    const handleOpen = () => {
+      setIsSocketReady(true);
+    };
+
+    const handleClose = () => {
+      setIsSocketReady(false);
+    };
+
+    // Ajouter des listeners pour les événements de connexion
+    socket.addEventListener("open", handleOpen);
+    socket.addEventListener("close", handleClose);
+
+    return () => {
+      // Nettoyage des listeners à la fermeture
+      socket.removeEventListener("open", handleOpen);
+      socket.removeEventListener("close", handleClose);
     };
   }, [socket]);
 
@@ -57,6 +87,7 @@ function GameScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.rootContainer}>
       <Video
+        key={VIDEO_URL}
         source={{ uri: VIDEO_URL }}
         style={styles.backgroundVideo}
         resizeMode="cover"
