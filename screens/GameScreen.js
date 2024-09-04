@@ -22,11 +22,7 @@ function GameScreen({ navigation }) {
   const socket = getSocket();
 
   const sendCommand = (command) => {
-    if (isSocketReady) {
-      socket.send(JSON.stringify(command));
-    } else {
-      console.log("Socket not ready, command not sent:", command);
-    }
+    socket.send(JSON.stringify(command));
   };
 
   useEffect(() => {
@@ -86,10 +82,12 @@ function GameScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <WebView
+      {/* <WebView
         source={{ uri: VIDEO_URL }}
         style={styles.backgroundWebView}
-      />
+      /> */}
+      <iframe  width="100%" height="100%" src="http://192.168.0.50:7000" ></iframe>
+
       <View style={styles.settingButton}>
         <IconButton
           icon={"settings-sharp"}
