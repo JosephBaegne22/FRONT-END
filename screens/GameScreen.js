@@ -48,31 +48,43 @@ function GameScreen({ navigation }) {
   };
 
   const handleCamLeft = () => {
-    cam_x = cam_x - 10;
+    if (cam_x > 10){
+      cam_x = cam_x - 10;
+    }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamRight = () => {
-    cam_x = cam_x + 10;
+    if (cam_x < 180){
+      cam_x = cam_x + 10;
+    }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamUp = () => {
-    cam_y = cam_y + 10;
+    if (cam_y < 180){
+      cam_y = cam_y + 10;
+    }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamDown = () => {
-    cam_y = cam_y - 10;
+    if (cam_y > 10){
+      cam_y = cam_y - 10;
+    }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleSpeedUp = () => {
-    speed = speed + 200;
+    if (speed < 4000){
+      speed = speed + 200;
+    }
   };
 
   const handleSpeedDown = () => {
-    speed = speed - 200;
+    if (speed > 200){
+      speed = speed - 200;
+    }
   };
 
   const htmlContent = `
