@@ -19,6 +19,8 @@ import { VIDEO_URL } from "@env";
 function GameScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
+  var cam_x = 90;
+  var cam_y = 90;
 
   const sendCommand = (command) => {
     socket.send(JSON.stringify(command));
@@ -44,6 +46,22 @@ function GameScreen({ navigation }) {
     sendCommand({ cmd: 1, data: [0, 0, 0, 0] });
   };
 
+  const handleCamLeft = () => {
+    sendCommand({ cmd: 3, data: [cam_x - 10, cam_y] });
+  };
+
+  const handleCamRight = () => {
+    sendCommand({ cmd: 3, data: [cam_x + 10, cam_y] });
+  };
+
+  const handleCamUp = () => {
+    sendCommand({ cmd: 3, data: [cam_x, cam_y + 10] });
+  };
+
+  const handleCamDown = () => {
+    sendCommand({ cmd: 3, data: [cam_x, cam_y - 10] });
+  };
+
   const htmlContent = `
     <html>
       <head>
@@ -65,16 +83,16 @@ function GameScreen({ navigation }) {
         </style>
       </head>
       <body>
-        <video src="${VIDEO_URL}" autoplay playsinline></video>
+        <div src="${VIDEO_URL}" autoplay muted playsinline></div>
       </body>
     </html>
   `;
 
   return (
     <>
-      <WebView
+      <WebView 
         originWhitelist={["*"]}
-        source={{ html: htmlContent }}
+        source={{ uri: VIDEO_URL }}
         style={styles.backgroundWebView}
       />
       <View style={styles.overlay}>
