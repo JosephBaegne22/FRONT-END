@@ -80,13 +80,21 @@ function GameScreen({ navigation }) {
     sendCommand({ cmd: 1, data: [0, 0, 0, 0] });
   };
 
+  const htmlContent = `
+    <html>
+      <body style="margin: 0; padding: 0; height: 100%; overflow: hidden;">
+        <iframe src="${VIDEO_URL}" style="border: none; width: 100%; height: 100%;" allowfullscreen></iframe>
+      </body>
+    </html>
+  `;
+
   return (
     <SafeAreaView style={styles.rootContainer}>
-      {/* <WebView
-        source={{ uri: VIDEO_URL }}
+      <WebView
+        originWhitelist={['*']}
+        source={{ html: htmlContent }}
         style={styles.backgroundWebView}
-      /> */}
-      <iframe  width="100%" height="100%" src="http://192.168.0.50:7000" ></iframe>
+      />
 
       <View style={styles.settingButton}>
         <IconButton
