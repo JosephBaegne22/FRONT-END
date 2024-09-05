@@ -33,6 +33,12 @@ function InGameMenuScreen({ navigation }) {
 							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthMainMenu") : navigation.replace("MainMenu")}
 						>
 							Abandonner
+						</Button>
+						<Button
+							size={styles.button}
+							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthMainMenu") : navigation.replace("MainMenu")}
+						>
+							Terminer la course
 						</Button>		
 					</View>
 				</View>

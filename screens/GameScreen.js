@@ -21,25 +21,26 @@ function GameScreen({ navigation }) {
   const socket = getSocket();
   var cam_x = 90;
   var cam_y = 90;
+  var speed = 2000;
 
   const sendCommand = (command) => {
     socket.send(JSON.stringify(command));
   };
 
   const handleForward = () => {
-    sendCommand({ cmd: 1, data: [2000, 2000, 2000, 2000] });
+    sendCommand({ cmd: 1, data: [speed, speed, speed, speed] });
   };
 
   const handleBackward = () => {
-    sendCommand({ cmd: 1, data: [-2000, -2000, -2000, -2000] });
+    sendCommand({ cmd: 1, data: [-speed, -speed, -speed, -speed] });
   };
 
   const handleLeft = () => {
-    sendCommand({ cmd: 1, data: [0, 0, 4000, 4000] });
+    sendCommand({ cmd: 1, data: [0, 0, speed, speed] });
   };
 
   const handleRight = () => {
-    sendCommand({ cmd: 1, data: [4000, 4000, 0, 0] });
+    sendCommand({ cmd: 1, data: [speed, speed, 0, 0] });
   };
 
   const handleBrake = () => {
@@ -47,19 +48,31 @@ function GameScreen({ navigation }) {
   };
 
   const handleCamLeft = () => {
-    sendCommand({ cmd: 3, data: [cam_x - 10, cam_y] });
+    cam_x = cam_x - 10;
+    sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamRight = () => {
-    sendCommand({ cmd: 3, data: [cam_x + 10, cam_y] });
+    cam_x = cam_x + 10;
+    sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamUp = () => {
-    sendCommand({ cmd: 3, data: [cam_x, cam_y + 10] });
+    cam_y = cam_y + 10;
+    sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamDown = () => {
-    sendCommand({ cmd: 3, data: [cam_x, cam_y - 10] });
+    cam_y = cam_y - 10;
+    sendCommand({ cmd: 3, data: [cam_x, cam_y] });
+  };
+
+  const handleSpeedUp = () => {
+    speed = speed + 200;
+  };
+
+  const handleSpeedDown = () => {
+    speed = speed - 200;
   };
 
   const htmlContent = `
