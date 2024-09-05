@@ -6,7 +6,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { WebView } from "react-native-webview";
 
@@ -17,48 +17,12 @@ import { getSocket } from "../util/websocket";
 import { VIDEO_URL } from "@env";
 
 function GameScreen({ navigation }) {
-  const [isSocketReady, setIsSocketReady] = useState(false);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
 
   const sendCommand = (command) => {
     socket.send(JSON.stringify(command));
   };
-
-  useEffect(() => {
-    // Activer le flux vidéo
-    if (isSocketReady) {
-      sendCommand({ cmd: 9, data: 1 });
-    }
-
-    return () => {
-      // Désactiver le flux vidéo
-      if (isSocketReady) {
-        sendCommand({ cmd: 9, data: 0 });
-      }
-    };
-  }, [isSocketReady]);
-
-  useEffect(() => {
-    // Vérifier que la connexion est prête
-    const handleOpen = () => {
-      setIsSocketReady(true);
-    };
-
-    const handleClose = () => {
-      setIsSocketReady(false);
-    };
-
-    // Ajouter des listeners pour les événements de connexion
-    socket.addEventListener("open", handleOpen);
-    socket.addEventListener("close", handleClose);
-
-    return () => {
-      // Nettoyage des listeners à la fermeture
-      socket.removeEventListener("open", handleOpen);
-      socket.removeEventListener("close", handleClose);
-    };
-  }, [socket]);
 
   const handleForward = () => {
     sendCommand({ cmd: 1, data: [2000, 2000, 2000, 2000] });
@@ -82,92 +46,113 @@ function GameScreen({ navigation }) {
 
   const htmlContent = `
     <html>
-      <body style="margin: 0; padding: 0; height: 100%; overflow: hidden;">
-        <iframe src="${VIDEO_URL}" style="border: none; width: 100%; height: 100%;" allowfullscreen></iframe>
+      <head>
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+          }
+          video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+          }
+        </style>
+      </head>
+      <body>
+        <video src="${VIDEO_URL}" autoplay playsinline></video>
       </body>
     </html>
   `;
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <>
       <WebView
-        originWhitelist={['*']}
+        originWhitelist={["*"]}
         source={{ html: htmlContent }}
         style={styles.backgroundWebView}
       />
-
-      <View style={styles.settingButton}>
-        <IconButton
-          icon={"settings-sharp"}
-          size={32}
-          color={Colors.primary300}
-          onPress={() =>
-            authCtx.isAuthenticated
-              ? navigation.replace("AuthInGameMenu")
-              : navigation.replace("InGameMenu")
-          }
-          library={"Ionicons"}
-        ></IconButton>
+      <View style={styles.overlay}>
+        <SafeAreaView style={styles.rootContainer}>
+          <View style={styles.settingButton}>
+            <IconButton
+              icon={"settings-sharp"}
+              size={32}
+              color={Colors.primary300}
+              onPress={() =>
+                authCtx.isAuthenticated
+                  ? navigation.replace("AuthInGameMenu")
+                  : navigation.replace("InGameMenu")
+              }
+              library={"Ionicons"}
+            ></IconButton>
+          </View>
+          <View style={styles.container}>
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <IconButton
+                  icon={"arrow-left"}
+                  size={80}
+                  color={Colors.primary300}
+                  onPress={handleLeft}
+                  library={"Entypo"}
+                ></IconButton>
+                <IconButton
+                  icon={"arrow-right"}
+                  size={80}
+                  color={Colors.primary300}
+                  onPress={handleRight}
+                  library={"Entypo"}
+                ></IconButton>
+              </View>
+            </View>
+            <View style={{ flex: 1, marginTop: "auto" }}>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  style={styles.speedometerImage}
+                  source={require("../assets/gameScreenImages/speedometer.png")}
+                ></Image>
+              </View>
+            </View>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <IconButton
+                  icon={"arrow-up"}
+                  size={80}
+                  color={Colors.primary300}
+                  onPress={handleForward}
+                  library={"Entypo"}
+                ></IconButton>
+                <IconButton
+                  icon={"arrow-down"}
+                  size={80}
+                  color={Colors.primary300}
+                  onPress={handleBackward}
+                  library={"Entypo"}
+                ></IconButton>
+              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  { flex: 1, justifyContent: "center", paddingLeft: 10 },
+                  pressed && styles.pressed,
+                ]}
+                onPress={handleBrake}
+              >
+                <Image
+                  style={styles.brakeImage}
+                  source={require("../assets/gameScreenImages/brake.png")}
+                ></Image>
+              </Pressable>
+            </View>
+          </View>
+        </SafeAreaView>
       </View>
-      <View style={styles.container}>
-        <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <IconButton
-              icon={"arrow-left"}
-              size={80}
-              color={Colors.primary300}
-              onPress={handleLeft}
-              library={"Entypo"}
-            ></IconButton>
-            <IconButton
-              icon={"arrow-right"}
-              size={80}
-              color={Colors.primary300}
-              onPress={handleRight}
-              library={"Entypo"}
-            ></IconButton>
-          </View>
-        </View>
-        <View style={{ flex: 1, marginTop: "auto" }}>
-          <View style={{ alignItems: "center" }}>
-            <Image
-              style={styles.speedometerImage}
-              source={require("../assets/gameScreenImages/speedometer.png")}
-            ></Image>
-          </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <IconButton
-              icon={"arrow-up"}
-              size={80}
-              color={Colors.primary300}
-              onPress={handleForward}
-              library={"Entypo"}
-            ></IconButton>
-            <IconButton
-              icon={"arrow-down"}
-              size={80}
-              color={Colors.primary300}
-              onPress={handleBackward}
-              library={"Entypo"}
-            ></IconButton>
-          </View>
-          <Pressable
-            style={({ pressed }) => [
-              { flex: 1, justifyContent: "center", paddingLeft: 10 },
-              pressed && styles.pressed,
-            ]}
-            onPress={handleBrake}
-          >
-            <Image
-              style={styles.brakeImage}
-              source={require("../assets/gameScreenImages/brake.png")}
-            ></Image>
-          </Pressable>
-        </View>
-      </View>
-    </SafeAreaView>
+    </>
   );
 }
 
@@ -217,5 +202,8 @@ const styles = StyleSheet.create({
     right: 0,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
