@@ -6,7 +6,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { WebView } from "react-native-webview";
 
@@ -15,8 +15,10 @@ import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
 import { getSocket } from "../util/websocket";
 import { VIDEO_URL } from "@env";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function GameScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
   var cam_x = 90;
@@ -48,41 +50,41 @@ function GameScreen({ navigation }) {
   };
 
   const handleCamLeft = () => {
-    if (cam_x > 10){
+    if (cam_x > 10) {
       cam_x = cam_x - 10;
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamRight = () => {
-    if (cam_x < 180){
+    if (cam_x < 180) {
       cam_x = cam_x + 10;
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamUp = () => {
-    if (cam_y < 180){
+    if (cam_y < 180) {
       cam_y = cam_y + 10;
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamDown = () => {
-    if (cam_y > 10){
+    if (cam_y > 10) {
       cam_y = cam_y - 10;
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleSpeedUp = () => {
-    if (speed < 4000){
+    if (speed < 4000) {
       speed = speed + 200;
     }
   };
 
   const handleSpeedDown = () => {
-    if (speed > 200){
+    if (speed > 200) {
       speed = speed - 200;
     }
   };
@@ -115,11 +117,16 @@ function GameScreen({ navigation }) {
 
   return (
     <>
-      <WebView 
-        originWhitelist={["*"]}
-        source={{ uri: VIDEO_URL }}
-        style={styles.backgroundWebView}
-      />
+      {isLoading ? (
+        <LoadingOverlay message="Chargement de la caméra..." />
+      ) : (
+        <WebView
+          originWhitelist={["*"]}
+          source={{ uri: VIDEO_URL }}
+          style={styles.backgroundWebView}
+          onLoadEnd={() => setIsLoading(false)}
+        />
+      )}
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
           <View style={styles.settingButton}>
@@ -134,6 +141,61 @@ function GameScreen({ navigation }) {
               }
               library={"Ionicons"}
             ></IconButton>
+          </View>
+          <View style={styles.arrowsContainer}>
+            <View style={{ alignItems: "center" }}>
+              <IconButton
+                icon={"upcircleo"}
+                size={35}
+                color={Colors.primary300}
+                onPress={handleCamUp}
+                library={"AntDesign"}
+              ></IconButton>
+              <View
+                style={[
+                  styles.container,
+                  { justifyContent: "space-between", width: 107 },
+                ]}
+              >
+                <IconButton
+                  icon={"leftcircleo"}
+                  size={35}
+                  color={Colors.primary300}
+                  onPress={handleCamLeft}
+                  library={"AntDesign"}
+                ></IconButton>
+                <IconButton
+                  icon={"rightcircleo"}
+                  size={35}
+                  color={Colors.primary300}
+                  onPress={handleCamRight}
+                  library={"AntDesign"}
+                ></IconButton>
+              </View>
+              <IconButton
+                icon={"downcircleo"}
+                size={35}
+                color={Colors.primary300}
+                onPress={handleCamDown}
+                library={"AntDesign"}
+              ></IconButton>
+            </View>
+            <View style={{ justifyContent: "space-around", height: 95 }}>
+              <IconButton
+                icon={"pluscircle"}
+                size={35}
+                color={Colors.primary300}
+                onPress={handleSpeedUp}
+                library={"AntDesign"}
+              ></IconButton>
+              <IconButton
+                icon={"minuscircle"}
+                size={35}
+                color={Colors.primary300}
+                onPress={handleSpeedDown}
+                library={"AntDesign"}
+              ></IconButton>
+            </View>
           </View>
           <View style={styles.container}>
             <View style={{ flex: 1 }}>
@@ -231,6 +293,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  arrowsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 70,
   },
   settingButton: {
     alignItems: "flex-end",
