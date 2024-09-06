@@ -94,13 +94,13 @@ function MainMenuScreen({ navigation }) {
 							<Button
 								left={true}
 								text={styles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "manual" }) : navigation.replace("Game", { mode: "manual" })}
 							>
 								Mode manuel
 							</Button>
 							<Button
 								text={styles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "auto" }) : navigation.replace("Game", { mode: "auto" })}
 							>
 								Mode automatique
 							</Button>
