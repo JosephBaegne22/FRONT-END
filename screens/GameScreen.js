@@ -5,6 +5,8 @@ import {
   Pressable,
   Platform,
   Dimensions,
+  Alert,
+  Text,
 } from "react-native";
 import { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +19,7 @@ import { getSocket } from "../util/websocket";
 import { VIDEO_URL } from "@env";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 
-function GameScreen({ navigation }) {
+function GameScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
@@ -25,8 +27,17 @@ function GameScreen({ navigation }) {
   var cam_y = 90;
   var speed = 2000;
 
+  const { mode } = route.params;
+
   const sendCommand = (command) => {
-    socket.send(JSON.stringify(command));
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(command));
+    } else {
+      Alert.alert(
+        "Erreur de connexion",
+        "La connexion avec le serveur n'est pas établie. Veuillez réessayer plus tard."
+      );
+    }
   };
 
   const handleForward = () => {
@@ -91,24 +102,39 @@ function GameScreen({ navigation }) {
 
   const handleAutoActivate = () => {
     sendCommand({ cmd: 10, data: 1 });
-  };  
+  };
 
   const handleAutoDesactivate = () => {
     sendCommand({ cmd: 10, data: 0 });
-  };  
+  };
 
   return (
     <>
-      {isLoading ? (
-        <LoadingOverlay message="Chargement de la caméra..." />
-      ) : (
-        <WebView
-          originWhitelist={["*"]}
-          source={{ uri: VIDEO_URL }}
-          style={styles.backgroundWebView}
-          onLoadEnd={() => setIsLoading(false)}
-        />
-      )}
+      <WebView
+        originWhitelist={["*"]}
+        source={{ uri: VIDEO_URL }}
+        style={styles.backgroundWebView}
+        onLoadEnd={() => setIsLoading(false)}
+        onError={() => {
+          setIsLoading(false);
+          Alert.alert(
+            "Erreur lors du chargement de la caméra, veuillez réessayer plus tard",
+            "",
+            [
+              {
+                text: "OK",
+                onPress: () =>
+                  authCtx.isAuthenticated
+                    ? navigation.replace("AuthInGameMenu", { mode: mode })
+                    : navigation.replace("InGameMenu", { mode: mode }),
+              },
+            ]
+          );
+        }}
+      />
+      <View style={styles.overlay}>
+        {isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
+      </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
           <View style={styles.settingButton}>
@@ -118,8 +144,8 @@ function GameScreen({ navigation }) {
               color={Colors.primary300}
               onPress={() =>
                 authCtx.isAuthenticated
-                  ? navigation.replace("AuthInGameMenu")
-                  : navigation.replace("InGameMenu")
+                  ? navigation.replace("AuthInGameMenu", { mode: mode })
+                  : navigation.replace("InGameMenu", { mode: mode })
               }
               library={"Ionicons"}
             ></IconButton>
@@ -179,78 +205,96 @@ function GameScreen({ navigation }) {
               ></IconButton>
             </View>
           </View>
-          <View style={styles.container}>
-            <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <IconButton
+          {mode === "auto" && (
+            <View style={styles.autoContainer}>
+              <View style={{justifyContent:"center", alignItems:"center"}}>
+                <IconButton
                   icon={"circle"}
-                  size={80}
-                  color={Colors.error500}
+                  size={110}
+                  color={Colors.primary300}
                   onPress={handleAutoDesactivate}
                   library={"FontAwesome"}
                 ></IconButton>
+                <View style={[styles.overlay, {justifyContent:"center", alignItems:"center"}]}>
+                  <Text style={styles.autoButton}>Arrêter</Text>
+                </View>
+              </View>
+              <View style={{justifyContent:"center", alignItems:"center"}}>
                 <IconButton
                   icon={"circle"}
-                  size={80}
+                  size={110}
                   color={Colors.primary300}
                   onPress={handleAutoActivate}
                   library={"FontAwesome"}
                 ></IconButton>
-                <IconButton
-                  icon={"arrow-left"}
-                  size={80}
-                  color={Colors.primary300}
-                  onPress={handleLeft}
-                  library={"Entypo"}
-                ></IconButton>
-                <IconButton
-                  icon={"arrow-right"}
-                  size={80}
-                  color={Colors.primary300}
-                  onPress={handleRight}
-                  library={"Entypo"}
-                ></IconButton>
+                <View style={[styles.overlay, {justifyContent:"center", alignItems:"center"}]}>
+                  <Text style={styles.autoButton}>Démarrer</Text>
+                </View>
               </View>
             </View>
-            <View style={{ flex: 1, marginTop: "auto" }}>
-              <View style={{ alignItems: "center" }}>
-                <Image
-                  style={styles.speedometerImage}
-                  source={require("../assets/gameScreenImages/speedometer.png")}
-                ></Image>
+          )}
+          {mode === "manual" && (
+            <View style={styles.container}>
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{ flexDirection: "row", justifyContent: "center" }}
+                >
+                  <IconButton
+                    icon={"arrow-left"}
+                    size={80}
+                    color={Colors.primary300}
+                    onPress={handleLeft}
+                    library={"Entypo"}
+                  ></IconButton>
+                  <IconButton
+                    icon={"arrow-right"}
+                    size={80}
+                    color={Colors.primary300}
+                    onPress={handleRight}
+                    library={"Entypo"}
+                  ></IconButton>
+                </View>
+              </View>
+              <View style={{ flex: 1, marginTop: "auto" }}>
+                <View style={{ alignItems: "center" }}>
+                  <Image
+                    style={styles.speedometerImage}
+                    source={require("../assets/gameScreenImages/speedometer.png")}
+                  ></Image>
+                </View>
+              </View>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <IconButton
+                    icon={"arrow-up"}
+                    size={80}
+                    color={Colors.primary300}
+                    onPress={handleForward}
+                    library={"Entypo"}
+                  ></IconButton>
+                  <IconButton
+                    icon={"arrow-down"}
+                    size={80}
+                    color={Colors.primary300}
+                    onPress={handleBackward}
+                    library={"Entypo"}
+                  ></IconButton>
+                </View>
+                <Pressable
+                  style={({ pressed }) => [
+                    { flex: 1, justifyContent: "center", paddingLeft: 10 },
+                    pressed && styles.pressed,
+                  ]}
+                  onPress={handleBrake}
+                >
+                  <Image
+                    style={styles.brakeImage}
+                    source={require("../assets/gameScreenImages/brake.png")}
+                  ></Image>
+                </Pressable>
               </View>
             </View>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <IconButton
-                  icon={"arrow-up"}
-                  size={80}
-                  color={Colors.primary300}
-                  onPress={handleForward}
-                  library={"Entypo"}
-                ></IconButton>
-                <IconButton
-                  icon={"arrow-down"}
-                  size={80}
-                  color={Colors.primary300}
-                  onPress={handleBackward}
-                  library={"Entypo"}
-                ></IconButton>
-              </View>
-              <Pressable
-                style={({ pressed }) => [
-                  { flex: 1, justifyContent: "center", paddingLeft: 10 },
-                  pressed && styles.pressed,
-                ]}
-                onPress={handleBrake}
-              >
-                <Image
-                  style={styles.brakeImage}
-                  source={require("../assets/gameScreenImages/brake.png")}
-                ></Image>
-              </Pressable>
-            </View>
-          </View>
+          )}
         </SafeAreaView>
       </View>
     </>
@@ -313,4 +357,13 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
   },
+  autoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  autoButton: {
+    fontSize:16,
+    fontWeight: "bold",
+  }
 });
