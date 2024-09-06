@@ -23,9 +23,10 @@ function GameScreen({ navigation, route }) {
   const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
-  var cam_x = 90;
-  var cam_y = 90;
-  var speed = 2000;
+  const [cam_x, setCam_x] = useState(90);
+  const [cam_y, setCam_y] = useState(90);
+  const [speed, setSpeed] = useState(2000);
+  const [direction, setDirection] = useState("");
 
   const { mode } = route.params;
 
@@ -41,62 +42,105 @@ function GameScreen({ navigation, route }) {
   };
 
   const handleForward = () => {
+    setDirection("forward");
     sendCommand({ cmd: 1, data: [speed, speed, speed, speed] });
   };
 
   const handleBackward = () => {
+    setDirection("backward");
     sendCommand({ cmd: 1, data: [-speed, -speed, -speed, -speed] });
   };
 
   const handleLeft = () => {
+    setDirection("left");
     sendCommand({ cmd: 1, data: [0, 0, speed, speed] });
   };
 
   const handleRight = () => {
+    setDirection("right");
     sendCommand({ cmd: 1, data: [speed, speed, 0, 0] });
   };
 
   const handleBrake = () => {
+    setDirection("break");
     sendCommand({ cmd: 1, data: [0, 0, 0, 0] });
   };
 
   const handleCamRight = () => {
     if (cam_x > 10) {
-      cam_x = cam_x - 10;
+      setCam_x(cam_x - 10);
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamLeft = () => {
     if (cam_x < 180) {
-      cam_x = cam_x + 10;
+      setCam_x(cam_x + 10);
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamUp = () => {
     if (cam_y < 180) {
-      cam_y = cam_y + 10;
+      setCam_y(cam_y + 10);
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
   const handleCamDown = () => {
-    if (cam_y > 10) {
-      cam_y = cam_y - 10;
-    }
+      setCam_y(cam_y - 10);
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
-  const handleSpeedUp = () => {
+  const handleCamReset = () => {
+    setCam_x(90);
+    setCam_y(90);
+    sendCommand({ cmd: 3, data: [cam_x, cam_y] });
+  };
+
+  const handleSpeedUp = () => {    
     if (speed < 4000) {
-      speed = speed + 200;
+      setSpeed(speed + 200);
+      switch (direction) {
+        case "forward":
+          handleForward();
+          break;
+        case "backward":
+          handleBackward();
+          break;
+        case "left":
+          handleLeft();
+          break;
+        case "right":
+          handleRight();
+          break;
+        default:
+          console.log("speed up : " + speed);
+          break;
+      }
     }
   };
 
   const handleSpeedDown = () => {
     if (speed > 200) {
-      speed = speed - 200;
+      setSpeed(speed - 200)
+      switch (direction) {
+        case "forward":
+          handleForward();
+          break;
+        case "backward":
+          handleBackward();
+          break;
+        case "left":
+          handleLeft();
+          break;
+        case "right":
+          handleRight();
+          break;
+        default:
+          console.log("speed down : " + speed);
+          break;
+      }
     }
   };
 
@@ -133,7 +177,7 @@ function GameScreen({ navigation, route }) {
         }}
       />
       <View style={styles.overlay}>
-        {isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
+        {!isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
       </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
@@ -150,6 +194,8 @@ function GameScreen({ navigation, route }) {
               library={"Ionicons"}
             ></IconButton>
           </View>
+          <Text style={styles.whiteText}
+              onPress={handleCamReset}>Reset cam</Text>
           <View style={styles.arrowsContainer}>
             <View style={{ alignItems: "center" }}>
               <IconButton
@@ -257,6 +303,7 @@ function GameScreen({ navigation, route }) {
               </View>
               <View style={{ flex: 1, marginTop: "auto" }}>
                 <View style={{ alignItems: "center" }}>
+                  <Text>Vitesse : {speed} tour/min</Text>
                   <Image
                     style={styles.speedometerImage}
                     source={require("../assets/gameScreenImages/speedometer.png")}
@@ -365,5 +412,7 @@ const styles = StyleSheet.create({
   autoButton: {
     fontSize:16,
     fontWeight: "bold",
-  }
+  },
+  whiteText: {
+    color: "white",}
 });
