@@ -89,6 +89,14 @@ function GameScreen({ navigation }) {
     }
   };
 
+  const handleAutoActivate = () => {
+    sendCommand({ cmd: 10, data: 1 });
+  };  
+
+  const handleAutoDesactivate = () => {
+    sendCommand({ cmd: 10, data: 0 });
+  };  
+
   return (
     <>
       {isLoading ? (
@@ -174,6 +182,20 @@ function GameScreen({ navigation }) {
           <View style={styles.container}>
             <View style={{ flex: 1 }}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <IconButton
+                  icon={"circle"}
+                  size={80}
+                  color={Colors.error500}
+                  onPress={handleAutoDesactivate}
+                  library={"FontAwesome"}
+                ></IconButton>
+                <IconButton
+                  icon={"circle"}
+                  size={80}
+                  color={Colors.primary300}
+                  onPress={handleAutoActivate}
+                  library={"FontAwesome"}
+                ></IconButton>
                 <IconButton
                   icon={"arrow-left"}
                   size={80}
