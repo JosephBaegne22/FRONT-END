@@ -49,14 +49,14 @@ function GameScreen({ navigation }) {
     sendCommand({ cmd: 1, data: [0, 0, 0, 0] });
   };
 
-  const handleCamLeft = () => {
+  const handleCamRight = () => {
     if (cam_x > 10) {
       cam_x = cam_x - 10;
     }
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
-  const handleCamRight = () => {
+  const handleCamLeft = () => {
     if (cam_x < 180) {
       cam_x = cam_x + 10;
     }
@@ -88,32 +88,6 @@ function GameScreen({ navigation }) {
       speed = speed - 200;
     }
   };
-
-  const htmlContent = `
-    <html>
-      <head>
-        <style>
-          body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-          }
-          video {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-          }
-        </style>
-      </head>
-      <body>
-        <div src="${VIDEO_URL}" autoplay muted playsinline></div>
-      </body>
-    </html>
-  `;
 
   return (
     <>
