@@ -6,8 +6,9 @@ import { AuthContext } from "../store/auth-context";
 import Button from "../components/ui/Button";
 import { Sizes, FullMenuStyles } from "../constants/styles";
 
-function InGameMenuScreen({ navigation }) {
+function InGameMenuScreen({ navigation, route }) {
   const authCtx = useContext(AuthContext);
+  const { mode } = route.params;
 
   return (
     <View style={FullMenuStyles.rootContainer}>
@@ -18,13 +19,13 @@ function InGameMenuScreen({ navigation }) {
 						<Text style={FullMenuStyles.title}>Jeu en pause</Text>
 						<Button
 							size={styles.button}
-							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame", {mode: mode}) : navigation.replace("Game", {mode: mode})}
 						>
 							Reprendre
 						</Button>
 						<Button
 							size={styles.button}
-							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame") : navigation.replace("Game")}
+							onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame", {mode: mode}) : navigation.replace("Game", {mode: mode})}
 						>
 							Recommencer
 						</Button>		
