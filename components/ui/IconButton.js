@@ -1,10 +1,11 @@
 import { Pressable, StyleSheet } from "react-native";
-import { Ionicons, Entypo, AntDesign } from "@expo/vector-icons";
+import { Ionicons, Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
 
 const iconLibraries = {
   Ionicons: Ionicons,
   Entypo: Entypo,
-  AntDesign: AntDesign
+  AntDesign: AntDesign,
+  FontAwesome: FontAwesome
 };
 
 function IconButton({ icon, color, size, onPress, style, library }) {
