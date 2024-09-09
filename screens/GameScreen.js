@@ -276,46 +276,31 @@ function GameScreen({ navigation, route }) {
               ></IconButton>
             </View>
           </View>
-          {mode === "auto" && (
-            <View style={styles.autoContainer}>
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <IconButton
-                  icon={"circle"}
-                  size={110}
-                  color={Colors.primary300}
-                  onPress={handleAutoDesactivate}
-                  library={"FontAwesome"}
-                ></IconButton>
+          <View style={styles.container}>
+            {mode === "auto" && (
+              <View style={{ flex: 1 }}>
                 <View
-                  style={[
-                    styles.overlay,
-                    { justifyContent: "center", alignItems: "center" },
-                  ]}
+                  style={{ justifyContent: "center", alignItems: "center" }}
                 >
-                  <Text style={styles.autoButton}>Arrêter</Text>
+                  <IconButton
+                    icon={"circle"}
+                    size={110}
+                    color={Colors.primary300}
+                    onPress={handleAutoDesactivate}
+                    library={"FontAwesome"}
+                  ></IconButton>
+                  <View
+                    style={[
+                      styles.overlay,
+                      { justifyContent: "center", alignItems: "center" },
+                    ]}
+                  >
+                    <Text style={styles.autoButton}>Arrêter</Text>
+                  </View>
                 </View>
               </View>
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <IconButton
-                  icon={"circle"}
-                  size={110}
-                  color={Colors.primary300}
-                  onPress={handleAutoActivate}
-                  library={"FontAwesome"}
-                ></IconButton>
-                <View
-                  style={[
-                    styles.overlay,
-                    { justifyContent: "center", alignItems: "center" },
-                  ]}
-                >
-                  <Text style={styles.autoButton}>Démarrer</Text>
-                </View>
-              </View>
-            </View>
-          )}
-          {mode === "manual" && (
-            <View style={styles.container}>
+            )}
+            {mode === "manual" && (
               <View style={{ flex: 1 }}>
                 <View
                   style={{ flexDirection: "row", justifyContent: "center" }}
@@ -336,22 +321,47 @@ function GameScreen({ navigation, route }) {
                   ></IconButton>
                 </View>
               </View>
-              <View style={{ flex: 1, marginTop: "auto" }}>
-                <View style={{ alignItems: "center" }}>
-                  <Image
-                    style={styles.speedometerImage}
-                    source={require("../assets/gameScreenImages/speedometer.png")}
-                  ></Image>
+            )}
+            <View style={{ flex: 1, marginTop: "auto" }}>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  style={styles.speedometerImage}
+                  source={require("../assets/gameScreenImages/speedometer.png")}
+                ></Image>
+                <View
+                  style={[
+                    styles.overlay,
+                    { justifyContent: "center", alignItems: "center" },
+                  ]}
+                >
+                  <Text style={styles.speed}>{speed}</Text>
+                </View>
+              </View>
+            </View>
+            {mode === "auto" && (
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <IconButton
+                    icon={"circle"}
+                    size={110}
+                    color={Colors.primary300}
+                    onPress={handleAutoActivate}
+                    library={"FontAwesome"}
+                  ></IconButton>
                   <View
                     style={[
                       styles.overlay,
                       { justifyContent: "center", alignItems: "center" },
                     ]}
                   >
-                    <Text style={styles.speed}>{speed}</Text>
+                    <Text style={styles.autoButton}>Démarrer</Text>
                   </View>
                 </View>
               </View>
+            )}
+            {mode === "manual" && (
               <View style={{ flex: 1, flexDirection: "row" }}>
                 <View style={{ flex: 1, alignItems: "center" }}>
                   <IconButton
@@ -382,8 +392,8 @@ function GameScreen({ navigation, route }) {
                   ></Image>
                 </Pressable>
               </View>
-            </View>
-          )}
+            )}
+          </View>
         </SafeAreaView>
       </View>
     </>
@@ -445,11 +455,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-  },
-  autoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
   },
   autoButton: {
     fontSize: 16,
