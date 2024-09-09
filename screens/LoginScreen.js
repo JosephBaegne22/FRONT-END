@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Alert, Dimensions } from "react-native";
+import { Alert, Dimensions, Platform } from "react-native";
 
 import AuthContent from "../components/auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
@@ -57,7 +57,10 @@ function LoginScreen() {
       isLogin
       onAuthenticate={loginHandler}
       title="Merci de vous connecter"
-      style={{ paddingTop: deviceHeight > 400 ? 12 : 32 }}
+      style={{
+        paddingTop:
+          deviceHeight > 400 ? 24 : Platform.OS === "android" ? 16 : 32,
+      }}
     />
   );
 }
