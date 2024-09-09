@@ -13,9 +13,9 @@ function WelcomeScreen({ navigation }) {
     <View style={styles.rootContainer}>
       <View style={styles.contentStyle}>
         <Button
-			text={styles.buttonText}
-			size={styles.buttonSize}
-			onPress={() => navigation.replace("MainMenu")}
+          text={styles.buttonText}
+          size={styles.buttonSize}
+          onPress={() => navigation.replace("MainMenu")}
         >
           Invité
         </Button>
@@ -37,11 +37,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary800,
   },
   buttonSize: {
-    marginHorizontal: 360,
+    width: 150,
     paddingVertical: 12,
     marginBottom: 20,
   },
   contentStyle: {
+    alignItems: "center",
     marginTop: 160,
   },
   buttonText: {
