@@ -8,9 +8,10 @@ import {
   Alert,
   Text,
 } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { WebView } from "react-native-webview";
+import { Ionicons } from "@expo/vector-icons";
 
 import { AuthContext } from "../store/auth-context";
 import { Colors } from "../constants/styles";
@@ -27,12 +28,50 @@ function GameScreen({ navigation, route }) {
   const [cam_y, setCam_y] = useState(90);
   const [speed, setSpeed] = useState(2000);
   const [direction, setDirection] = useState("");
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [start, setStart] = useState(false);
 
   const { mode } = route.params;
+
+  useEffect(() => {
+    if (mode === "manual" || start === true) {
+      const timer = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 59) {
+            setSeconds(0);
+            setMinutes((prevMinutes) => {
+              if (prevMinutes === 59) {
+                setMinutes(0);
+                setHours((prevHours) => prevHours + 1);
+              }
+              return prevMinutes + 1;
+            });
+          }
+          return prevSeconds + 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [mode, start]);
 
   const sendCommand = (command) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(command));
+      switch (command.cmd) {
+        case 10:
+          switch (command.data) {
+            case 1:
+              setStart(true);
+              break;
+            case 0:
+              setStart(false);
+              break;
+          }
+          break;
+      }
     } else {
       Alert.alert(
         "Erreur de connexion",
@@ -185,7 +224,21 @@ function GameScreen({ navigation, route }) {
       </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
-          <View style={styles.settingButton}>
+          <View style={styles.timerSettingContainer}>
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                {`${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+                  2,
+                  "0"
+                )}:${String(seconds).padStart(2, "0")}`}
+              </Text>
+              <Ionicons
+                name="timer"
+                size={26}
+                color="white"
+                style={styles.timerIcon}
+              />
+            </View>
             <IconButton
               icon={"settings-sharp"}
               size={32}
@@ -434,15 +487,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   arrowsContainer: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: Platform.OS === "ios" ? 5 : 30,
-  },
-  settingButton: {
-    alignItems: "flex-end",
-    marginRight: Platform.OS === "ios" ? 0 : 25,
-    marginTop: Platform.OS === "ios" ? 40 : 15,
   },
   backgroundWebView: {
     position: "absolute",
@@ -468,5 +517,32 @@ const styles = StyleSheet.create({
     color: Colors.primary100,
     fontSize: 18,
     fontWeight: "bold",
+  },
+  timerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+  },
+  timerText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+    marginRight: 3,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  timerSettingContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: Platform.OS === "ios" ? 0 : 25,
+    marginTop: Platform.OS === "ios" ? 40 : 0,
+  },
+  timerIcon: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    paddingHorizontal: 8,
+    paddingVertical: 4.5,
   },
 });
