@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Alert, Dimensions } from "react-native";
+import { Alert, Dimensions, Platform } from "react-native";
 
 import AuthContent from "../components/auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
@@ -66,10 +66,14 @@ function SignupScreen({ route }) {
       style={{
         paddingTop: isResetPwd
           ? deviceHeight > 400
-            ? 12
-            : 32
+            ? 24
+            : Platform.OS === "android"
+            ? 8
+            : 40
           : deviceHeight > 400
           ? 26
+          : Platform.OS === "android"
+          ? 16
           : 48,
       }}
     />

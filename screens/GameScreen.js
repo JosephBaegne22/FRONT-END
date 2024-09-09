@@ -88,7 +88,7 @@ function GameScreen({ navigation, route }) {
   };
 
   const handleCamDown = () => {
-      setCam_y(cam_y - 10);
+    setCam_y(cam_y - 10);
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
@@ -98,7 +98,7 @@ function GameScreen({ navigation, route }) {
     sendCommand({ cmd: 3, data: [cam_x, cam_y] });
   };
 
-  const handleSpeedUp = () => {    
+  const handleSpeedUp = () => {
     if (speed < 4000) {
       setSpeed(speed + 200);
       switch (direction) {
@@ -123,7 +123,7 @@ function GameScreen({ navigation, route }) {
 
   const handleSpeedDown = () => {
     if (speed > 200) {
-      setSpeed(speed - 200)
+      setSpeed(speed - 200);
       switch (direction) {
         case "forward":
           handleForward();
@@ -158,7 +158,11 @@ function GameScreen({ navigation, route }) {
         originWhitelist={["*"]}
         source={{ uri: VIDEO_URL }}
         style={styles.backgroundWebView}
-        onLoadEnd={() => setIsLoading(false)}
+        onLoadProgress={({ nativeEvent }) => {
+          if (nativeEvent.progress === 1) {
+            setIsLoading(false);
+          }
+        }}
         onError={() => {
           setIsLoading(false);
           Alert.alert(
@@ -177,7 +181,7 @@ function GameScreen({ navigation, route }) {
         }}
       />
       <View style={styles.overlay}>
-        {!isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
+        {isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
       </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
@@ -194,10 +198,31 @@ function GameScreen({ navigation, route }) {
               library={"Ionicons"}
             ></IconButton>
           </View>
-          <Text style={styles.whiteText}
-              onPress={handleCamReset}>Reset cam</Text>
           <View style={styles.arrowsContainer}>
-            <View style={{ alignItems: "center" }}>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <IconButton
+                icon={"circle"}
+                size={60}
+                color={Colors.primary300}
+                onPress={handleCamReset}
+                library={"FontAwesome"}
+              ></IconButton>
+              <View
+                style={[
+                  styles.overlay,
+                  { justifyContent: "center", alignItems: "center" },
+                ]}
+              >
+                <Text style={styles.resetButton}>Reset</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                marginRight: "auto",
+                marginLeft: 10,
+              }}
+            >
               <IconButton
                 icon={"upcircleo"}
                 size={35}
@@ -253,7 +278,7 @@ function GameScreen({ navigation, route }) {
           </View>
           {mode === "auto" && (
             <View style={styles.autoContainer}>
-              <View style={{justifyContent:"center", alignItems:"center"}}>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <IconButton
                   icon={"circle"}
                   size={110}
@@ -261,11 +286,16 @@ function GameScreen({ navigation, route }) {
                   onPress={handleAutoDesactivate}
                   library={"FontAwesome"}
                 ></IconButton>
-                <View style={[styles.overlay, {justifyContent:"center", alignItems:"center"}]}>
+                <View
+                  style={[
+                    styles.overlay,
+                    { justifyContent: "center", alignItems: "center" },
+                  ]}
+                >
                   <Text style={styles.autoButton}>Arrêter</Text>
                 </View>
               </View>
-              <View style={{justifyContent:"center", alignItems:"center"}}>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <IconButton
                   icon={"circle"}
                   size={110}
@@ -273,7 +303,12 @@ function GameScreen({ navigation, route }) {
                   onPress={handleAutoActivate}
                   library={"FontAwesome"}
                 ></IconButton>
-                <View style={[styles.overlay, {justifyContent:"center", alignItems:"center"}]}>
+                <View
+                  style={[
+                    styles.overlay,
+                    { justifyContent: "center", alignItems: "center" },
+                  ]}
+                >
                   <Text style={styles.autoButton}>Démarrer</Text>
                 </View>
               </View>
@@ -303,11 +338,18 @@ function GameScreen({ navigation, route }) {
               </View>
               <View style={{ flex: 1, marginTop: "auto" }}>
                 <View style={{ alignItems: "center" }}>
-                  <Text>Vitesse : {speed} tour/min</Text>
                   <Image
                     style={styles.speedometerImage}
                     source={require("../assets/gameScreenImages/speedometer.png")}
                   ></Image>
+                  <View
+                    style={[
+                      styles.overlay,
+                      { justifyContent: "center", alignItems: "center" },
+                    ]}
+                  >
+                    <Text style={styles.speed}>{speed}</Text>
+                  </View>
                 </View>
               </View>
               <View style={{ flex: 1, flexDirection: "row" }}>
@@ -385,12 +427,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 70,
+    marginHorizontal: Platform.OS === "ios" ? 5 : 30,
   },
   settingButton: {
     alignItems: "flex-end",
-    marginRight: 20,
-    marginTop: 10,
+    marginRight: Platform.OS === "ios" ? 0 : 25,
+    marginTop: Platform.OS === "ios" ? 40 : 15,
   },
   backgroundWebView: {
     position: "absolute",
@@ -410,9 +452,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   autoButton: {
-    fontSize:16,
+    fontSize: 16,
     fontWeight: "bold",
   },
-  whiteText: {
-    color: "white",}
+  resetButton: {
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  speed: {
+    color: Colors.primary100,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
