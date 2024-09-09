@@ -520,29 +520,30 @@ const styles = StyleSheet.create({
   },
   timerContainer: {
     flexDirection: "row",
-    alignItems: "center",
     backgroundColor: "white",
   },
   timerText: {
+    textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
     marginRight: 3,
     backgroundColor: "rgba(0, 0, 0, 0.6)",
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    width: 128,
+    paddingVertical: 2
   },
   timerSettingContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginHorizontal: Platform.OS === "ios" ? 0 : 25,
     marginTop: Platform.OS === "ios" ? 40 : 0,
   },
   timerIcon: {
+    textAlign: "center",
     backgroundColor: "rgba(0, 0, 0, 0.6)",
-    paddingHorizontal: 8,
-    paddingVertical: 4.5,
+    width: 40,
+    paddingTop: 3
   },
 });
