@@ -196,7 +196,7 @@ function GameScreen({ navigation, route }) {
       <WebView
         originWhitelist={["*"]}
         source={{ uri: VIDEO_URL }}
-        style={styles.backgroundWebView}
+        style={StyleSheet.absoluteFillObject}
         onLoadProgress={({ nativeEvent }) => {
           if (nativeEvent.progress === 1) {
             setIsLoading(false);
@@ -500,15 +500,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: Platform.OS === "ios" ? 5 : 30,
-  },
-  backgroundWebView: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
