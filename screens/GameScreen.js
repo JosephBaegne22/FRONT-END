@@ -224,7 +224,14 @@ function GameScreen({ navigation, route }) {
       </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
-          <View style={styles.timerSettingContainer}>
+          <View
+            style={[
+              styles.timerSettingContainer,
+              mode === "manual"
+                ? { flex: 1, alignItems: "flex-start" }
+                : { alignItems: "center" },
+            ]}
+          >
             <View style={styles.timerContainer}>
               <Text style={styles.timerText}>
                 {`${String(hours).padStart(2, "0")}:${String(minutes).padStart(
@@ -251,7 +258,9 @@ function GameScreen({ navigation, route }) {
               library={"Ionicons"}
             ></IconButton>
           </View>
-          <View style={styles.arrowsContainer}>
+          <View
+            style={[styles.arrowsContainer, mode === "manual" && { flex: 1 }]}
+          >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <IconButton
                 icon={"circle"}
@@ -487,7 +496,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   arrowsContainer: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -530,13 +538,11 @@ const styles = StyleSheet.create({
     marginRight: 3,
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     width: 128,
-    paddingVertical: 2
+    paddingVertical: 2,
   },
   timerSettingContainer: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
     marginHorizontal: Platform.OS === "ios" ? 0 : 25,
     marginTop: Platform.OS === "ios" ? 40 : 0,
   },
@@ -544,6 +550,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     width: 40,
-    paddingTop: 3
+    paddingTop: 3,
   },
 });
