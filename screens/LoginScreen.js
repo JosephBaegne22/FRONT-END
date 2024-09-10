@@ -28,9 +28,14 @@ function LoginScreen() {
         SUCCESS_MESSAGES[data.message] || "Connexion réussie !";
       setMessage(successMessage);
     } catch (error) {
-      const errorMessage =
-        ERROR_MESSAGES[error.data.message] ||
-        "Impossible de vous connecter. Veuillez vérifier vos informations d'identification ou réessayer plus tard!";
+      let errorMessage;
+
+      if (error?.data?.message) {
+        errorMessage = ERROR_MESSAGES[error.data.message] || "Impossible de vous connecter. Veuillez vérifier vos informations d'identification ou réessayer plus tard!";
+      } else {
+        errorMessage =
+          "Impossible de vous connecter. Veuillez vérifier vos informations d'identification ou réessayer plus tard!";
+      }
       setError(errorMessage);
     } finally {
       setIsAuthenticating(false);

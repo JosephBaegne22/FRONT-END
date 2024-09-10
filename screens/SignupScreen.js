@@ -26,9 +26,14 @@ function SignupScreen({ route }) {
       const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
       setMessage(successMessage);
     } catch (error) {
-      const errorMessage =
-        ERROR_MESSAGES[error.data.message] ||
-        "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !";
+      let errorMessage;
+
+      if (error?.data?.message) {
+        errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !";
+      } else {
+        errorMessage =
+          "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !";
+      }
       setError(errorMessage);
     } finally {
       setIsAuthenticating(false);
