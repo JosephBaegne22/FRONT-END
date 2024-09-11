@@ -9,6 +9,7 @@ import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
 import Button from "../components/ui/Button";
 import FlatButton from "../components/ui/FlatButton";
+import { getSocket } from "../util/websocket";
 
 function MainMenuScreen({ navigation }) {
 	const [isSigningOut, setIsSigningOut] = useState(false);
@@ -16,6 +17,18 @@ function MainMenuScreen({ navigation }) {
 	const [error, setError] = useState(null);
 
 	const authCtx = useContext(AuthContext);
+	const socket = getSocket();
+
+	const sendCommand = (command) => {
+		if (socket && socket.readyState === WebSocket.OPEN) {
+		  socket.send(JSON.stringify(command));
+		} else {
+		  Alert.alert(
+			"Erreur de connexion",
+			"La connexion avec le serveur n'est pas établie. Veuillez réessayer plus tard."
+		  );
+		}
+	  };
 
 	async function signOutHandler() {
 		setIsSigningOut(true);
@@ -24,7 +37,14 @@ function MainMenuScreen({ navigation }) {
 			const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
 			setMessage(successMessage);
 		} catch (error) {
-			const errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+			let errorMessage;
+
+			if (error?.data?.message) {
+				errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+			} else {
+				errorMessage =
+				"Une erreur est survenue lors de la déconnexion. Veuillez réessayer plus tard!";
+			}
 			setError(errorMessage);
 		} finally {
 			setIsSigningOut(false);
@@ -94,7 +114,10 @@ function MainMenuScreen({ navigation }) {
 							<Button
 								left={true}
 								text={styles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "manual" }) : navigation.replace("Game", { mode: "manual" })}
+								onPress={() => {
+									sendCommand({ cmd: 11, data: 1 });
+									authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "manual" }) : navigation.replace("Game", { mode: "manual" });
+								}}
 							>
 								Mode manuel
 							</Button>

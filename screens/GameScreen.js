@@ -36,7 +36,12 @@ function GameScreen({ navigation, route }) {
   const { mode } = route.params;
 
   useEffect(() => {
-    if (mode === "manual" || start === true) {
+    if (
+      socket &&
+      socket.readyState === WebSocket.OPEN &&
+      isLoading === false &&
+      (mode === "manual" || start === true)
+    ) {
       const timer = setInterval(() => {
         setSeconds((prevSeconds) => {
           if (prevSeconds === 59) {
@@ -55,10 +60,10 @@ function GameScreen({ navigation, route }) {
 
       return () => clearInterval(timer);
     }
-  }, [mode, start]);
+  }, [mode, start, socket, isLoading]);
 
   const sendCommand = (command) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    if (socket && socket.readyState === WebSocket.OPEN && isLoading === false) {
       socket.send(JSON.stringify(command));
       switch (command.cmd) {
         case 10:
@@ -153,12 +158,9 @@ function GameScreen({ navigation, route }) {
         case "right":
           handleRight();
           break;
-        default:
-          console.log("speed up : " + speed);
-          break;
       }
     }
-  };
+  };  
 
   const handleSpeedDown = () => {
     if (speed > 200) {
@@ -176,15 +178,13 @@ function GameScreen({ navigation, route }) {
         case "right":
           handleRight();
           break;
-        default:
-          console.log("speed down : " + speed);
-          break;
       }
     }
   };
 
   const handleAutoActivate = () => {
     sendCommand({ cmd: 10, data: 1 });
+    sendCommand({ cmd: 11, data: 1 });
   };
 
   const handleAutoDesactivate = () => {
@@ -268,15 +268,9 @@ function GameScreen({ navigation, route }) {
                 color={Colors.primary300}
                 onPress={handleCamReset}
                 library={"FontAwesome"}
+                text="Reset"
+                textStyle={styles.resetButton}
               ></IconButton>
-              <View
-                style={[
-                  styles.overlay,
-                  { justifyContent: "center", alignItems: "center" },
-                ]}
-              >
-                <Text style={styles.resetButton}>Reset</Text>
-              </View>
             </View>
             <View
               style={{
@@ -350,15 +344,9 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleAutoDesactivate}
                     library={"FontAwesome"}
+                    text="Arrêter"
+                    textStyle={styles.autoButton}
                   ></IconButton>
-                  <View
-                    style={[
-                      styles.overlay,
-                      { justifyContent: "center", alignItems: "center" },
-                    ]}
-                  >
-                    <Text style={styles.autoButton}>Arrêter</Text>
-                  </View>
                 </View>
               </View>
             )}
@@ -411,15 +399,9 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleAutoActivate}
                     library={"FontAwesome"}
+                    text="Démarrer"
+                    textStyle={styles.autoButton}
                   ></IconButton>
-                  <View
-                    style={[
-                      styles.overlay,
-                      { justifyContent: "center", alignItems: "center" },
-                    ]}
-                  >
-                    <Text style={styles.autoButton}>Démarrer</Text>
-                  </View>
                 </View>
               </View>
             )}
