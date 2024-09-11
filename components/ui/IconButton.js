@@ -15,10 +15,8 @@ function IconButton({ icon, color, size, onPress, style, library, text, textStyl
       style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
       onPress={onPress}
     >
-      <View style={styles.content}>
         {IconComponent && <IconComponent name={icon} color={color} size={size} />}
         {text && <View style={[styles.overlay, styles.content]}><Text style={[textStyle]}>{text}</Text></View>}
-      </View>
     </Pressable>
   );
 }
