@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View, Text } from "react-native";
 import { Ionicons, Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
 
 const iconLibraries = {
@@ -8,14 +8,17 @@ const iconLibraries = {
   FontAwesome: FontAwesome
 };
 
-function IconButton({ icon, color, size, onPress, style, library }) {
+function IconButton({ icon, color, size, onPress, style, library, text, textStyle }) {
   const IconComponent = iconLibraries[library];
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
       onPress={onPress}
     >
-      {IconComponent && <IconComponent name={icon} color={color} size={size} />}
+      <View style={styles.content}>
+        {IconComponent && <IconComponent name={icon} color={color} size={size} />}
+        {text && <View style={[styles.overlay, styles.content]}><Text style={[textStyle]}>{text}</Text></View>}
+      </View>
     </Pressable>
   );
 }
@@ -28,5 +31,12 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.7,
+  },
+  content: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
