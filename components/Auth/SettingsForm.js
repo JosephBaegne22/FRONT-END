@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import Button from "../ui/Button";
 import Input from "./Input";
 
-function SettingsForm({ onSubmit, credentialsInvalid }) {
+function SettingsForm({ onSubmit, credentialsInvalid, onAuthenticate }) {
 	const [enteredUsername, setEnteredUsername] = useState("");
 	const [enteredSecretAnswer, setEnteredSecretAnswer] = useState("");
 	const [enteredPassword, setEnteredPassword] = useState("");
@@ -16,14 +16,34 @@ function SettingsForm({ onSubmit, credentialsInvalid }) {
 		confirmPassword: passwordsDontMatch,
 	} = credentialsInvalid;
 
-	function submitHandler() {
-		onSubmit({
-			username: enteredUsername,
-			secretAnswer: enteredSecretAnswer,
-			password: enteredPassword,
-			confirmPassword: enteredConfirmPassword,
-		});
+	function submitHandler(credentials) {
+		let { username, secretAnswer, password, confirmPassword } = credentials;
+	
+		username = username.trim();
+		password = password.trim();
+	
+		const usernameIsValid = username.length >= 4;
+		const passwordIsValid = password.length > 7;
+		const passwordsAreEqual = password === confirmPassword;
+	
+		if (
+			!usernameIsValid ||
+			!passwordIsValid ||
+			(!isLogin && !passwordsAreEqual)
+		) {
+			Alert.alert(
+				"Entrée invalide, veuillez vérifier les informations que vous avez saisies."
+			);
+			setCredentialsInvalid({
+				username: !usernameIsValid,
+				password: !passwordIsValid,
+				confirmPassword: !passwordIsValid || !passwordsAreEqual,
+			});
+		  return;
+		}
+		onAuthenticate({ username, password, secretAnswer });
 	}
+	
 
 	return (
 		<View style={styles.form}>

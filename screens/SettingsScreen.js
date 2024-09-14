@@ -1,46 +1,69 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView } from "react-native";
 
 import SettingsForm from "../components/auth/SettingsForm";
 import { AuthContext } from "../store/auth-context";
 import IconButton from "../components/ui/IconButton";
-import FlatButton from "../components/ui/FlatButton";
 import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
 
 function SettingsScreen({ navigation }) {
   	const authCtx = useContext(AuthContext);
-	  const [credentialsInvalid, setCredentialsInvalid] = useState({
-		username: false,
-		password: false,
-		confirmPassword: false,
-	  });
+		const [credentialsInvalid, setCredentialsInvalid] = useState({
+			username: false,
+			password: false,
+			confirmPassword: false,
+		});
 	
-	function submitHandler(credentials) {
-		let { username, secretAnswer, password, confirmPassword } = credentials;
-	
-		username = username.trim();
-		password = password.trim();
-	
-		const usernameIsValid = username.length >= 4;
-		const passwordIsValid = password.length > 7;
-		const passwordsAreEqual = password === confirmPassword;
-	
-		if (
-			!usernameIsValid ||
-			!passwordIsValid ||
-			(!isLogin && !passwordsAreEqual)
-		) {
-			Alert.alert(
-				"Entrée invalide, veuillez vérifier les informations que vous avez saisies."
-			);
-			setCredentialsInvalid({
-				username: !usernameIsValid,
-				password: !passwordIsValid,
-				confirmPassword: !passwordIsValid || !passwordsAreEqual,
-			});
-		  return;
+	const [isAuthenticating, setIsAuthenticating] = useState(false);
+	const [message, setMessage] = useState("");
+	const [error, setError] = useState(null);
+
+	async function signupHandler({ username, password, secretAnswer }) {
+		setIsAuthenticating(true);
+		try {
+		let res = await resetPassword(username, password, secretAnswer);
+		const successMessage = SUCCESS_MESSAGES[res.message] || res.message;
+		setMessage(successMessage);
+		} catch (error) {
+			let errorMessage;
+
+			if (error?.data?.message) {
+				errorMessage = ERROR_MESSAGES[error.data.message] || "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !";
+			} else {
+				errorMessage =
+				"Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !";
+			}
+				setError(errorMessage);
+		} finally {
+			setIsAuthenticating(false);
 		}
-		onAuthenticate({ username, password, secretAnswer });
+	}
+
+	useEffect(() => {
+		if (message) {
+			Alert.alert(message);
+			setMessage("");
+		}
+		if (error) {
+			Alert.alert(error);
+			setError(null);
+		}
+	}, [message, error]);
+
+	if (isAuthenticating) {
+		return (
+			<LoadingOverlay
+				message={"Mise à jour en cours..."}
+			/>
+		);
+	}
+	function submitHandler() {
+		onSubmit({
+			username: enteredUsername,
+			secretAnswer: enteredSecretAnswer,
+			password: enteredPassword,
+			confirmPassword: enteredConfirmPassword,
+		});
 	}
 
 	return (
@@ -60,10 +83,9 @@ function SettingsScreen({ navigation }) {
 							</View>
 							<Text style={[FullMenuStyles.title]}>Paramètres</Text>
 							<SettingsForm
-								isLogin={false}
+								onAuthenticate={signupHandler}
 								onSubmit={submitHandler}
 								credentialsInvalid={credentialsInvalid}
-								isResetPwd={true}
 							/>
 						</View>
 					</ScrollView>
