@@ -21,7 +21,6 @@ import { VIDEO_URL } from "@env";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function GameScreen({ navigation, route }) {
-  const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
   const [cam_x, setCam_x] = useState(90);
@@ -39,7 +38,6 @@ function GameScreen({ navigation, route }) {
     if (
       socket &&
       socket.readyState === WebSocket.OPEN &&
-      isLoading === false &&
       (mode === "manual" || start === true)
     ) {
       const timer = setInterval(() => {
@@ -60,10 +58,10 @@ function GameScreen({ navigation, route }) {
 
       return () => clearInterval(timer);
     }
-  }, [mode, start, socket, isLoading]);
+  }, [mode, start, socket]);
 
   const sendCommand = (command) => {
-    if (socket && socket.readyState === WebSocket.OPEN && isLoading === false) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(command));
       switch (command.cmd) {
         case 10:
@@ -160,7 +158,7 @@ function GameScreen({ navigation, route }) {
           break;
       }
     }
-  };  
+  };
 
   const handleSpeedDown = () => {
     if (speed > 200) {
@@ -183,8 +181,15 @@ function GameScreen({ navigation, route }) {
   };
 
   const handleAutoActivate = () => {
-    sendCommand({ cmd: 10, data: 1 });
-    sendCommand({ cmd: 11, data: 1 });
+    if (socket && socket.readyState === WebSocket.OPEN && isLoading === false) {
+      sendCommand({ cmd: 10, data: 1 });
+      sendCommand({ cmd: 11, data: 1 });
+    } else {
+      Alert.alert(
+        "Erreur de connexion",
+        "La connexion avec le serveur n'est pas établie. Veuillez réessayer plus tard."
+      );
+    }
   };
 
   const handleAutoDesactivate = () => {
@@ -197,13 +202,7 @@ function GameScreen({ navigation, route }) {
         originWhitelist={["*"]}
         source={{ uri: VIDEO_URL }}
         style={StyleSheet.absoluteFillObject}
-        onLoadProgress={({ nativeEvent }) => {
-          if (nativeEvent.progress === 1) {
-            setIsLoading(false);
-          }
-        }}
         onError={() => {
-          setIsLoading(false);
           Alert.alert(
             "Erreur lors du chargement de la caméra, veuillez réessayer plus tard",
             "",
@@ -219,9 +218,6 @@ function GameScreen({ navigation, route }) {
           );
         }}
       />
-      <View style={styles.overlay}>
-        {isLoading && <LoadingOverlay message="Chargement de la caméra..." />}
-      </View>
       <View style={styles.overlay}>
         <SafeAreaView style={styles.rootContainer}>
           <View
