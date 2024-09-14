@@ -77,34 +77,35 @@ function MainMenuScreen({ navigation }) {
 				<SafeAreaView style={FullMenuStyles.generalContainer}>
 					<View style={FullMenuStyles.menuContainer}>
 						<Text style={FullMenuStyles.title}>Bonjour {userName} !</Text>
-						<View
-						style={[
-							FullMenuStyles.buttonContainer
-						]}
-						>
-							<Button
-								left={true}
-								text={styles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthStats") : navigation.replace("Stats")}
+						{authCtx.isAuthenticated && (
+							<View
+							style={[
+								FullMenuStyles.buttonContainer
+							]}
 							>
-								Statistiques
-							</Button>
-							{/* {authCtx.isAuthenticated &&
+								<Button
+									left={true}
+									text={styles.buttonText}
+									onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthStats") : navigation.replace("Stats")}
+								>
+									Statistiques
+								</Button>
+								{/* {authCtx.isAuthenticated &&
+									<Button
+										text={styles.buttonText}
+										onPress={() => navigation.replace("Settings")}
+									>
+										Paramètres
+									</Button>
+								} */}
 								<Button
 									text={styles.buttonText}
-									onPress={() => navigation.replace("Settings")}
+									onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthSettings") : navigation.replace("Settings")}
 								>
 									Paramètres
 								</Button>
-							} */}
-							<Button
-								text={styles.buttonText}
-								onPress={() => authCtx.isAuthenticated ? navigation.replace("AuthSettings") : navigation.replace("Settings")}
-							>
-								Paramètres
-							</Button>
-						</View>
-
+							</View>
+						)}
 						<Text style={FullMenuStyles.subTitle}>Nouvelle course</Text>
 						<View
 						style={[
