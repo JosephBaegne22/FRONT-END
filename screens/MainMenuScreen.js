@@ -19,6 +19,11 @@ function MainMenuScreen({ navigation }) {
 	const authCtx = useContext(AuthContext);
 	const socket = getSocket();
 
+	const getCurrentDateTime = () => {
+		const now = new Date();
+		return now.toISOString();
+	};
+
 	const sendCommand = (command) => {
 		if (socket && socket.readyState === WebSocket.OPEN) {
 		  socket.send(JSON.stringify(command));
@@ -116,8 +121,9 @@ function MainMenuScreen({ navigation }) {
 								left={true}
 								text={styles.buttonText}
 								onPress={() => {
+									const startAt = getCurrentDateTime();
 									sendCommand({ cmd: 11, data: 1 });
-									authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "manual" }) : navigation.replace("Game", { mode: "manual" });
+									authCtx.isAuthenticated ? navigation.replace("AuthGame", { mode: "manual", startAt: startAt }) : navigation.replace("Game", { mode: "manual" });
 								}}
 							>
 								Mode manuel

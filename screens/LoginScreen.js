@@ -22,7 +22,7 @@ function LoginScreen() {
       const token = data.payload.token;
       const user = data.payload.user;
       authCtx.authenticate(token);
-      authCtx.getUser(user);
+      authCtx.setUser(user);
 
       const successMessage =
         SUCCESS_MESSAGES[data.message] || "Connexion réussie !";
