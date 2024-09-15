@@ -252,6 +252,7 @@ function GameScreen({ navigation, route }) {
                   : navigation.replace("InGameMenu", { mode: mode })
               }
               library={"Ionicons"}
+              testID="settings-button"
             ></IconButton>
           </View>
           <View
@@ -357,6 +358,7 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleLeft}
                     library={"Entypo"}
+                    testID="left-button"
                   ></IconButton>
                   <IconButton
                     icon={"arrow-right"}
@@ -364,6 +366,7 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleRight}
                     library={"Entypo"}
+                    testID="right-button"
                   ></IconButton>
                 </View>
               </View>
@@ -410,6 +413,7 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleForward}
                     library={"Entypo"}
+                    testID="forward-button"
                   ></IconButton>
                   <IconButton
                     icon={"arrow-down"}
@@ -417,6 +421,7 @@ function GameScreen({ navigation, route }) {
                     color={Colors.primary300}
                     onPress={handleBackward}
                     library={"Entypo"}
+                    testID="backward-button"
                   ></IconButton>
                 </View>
                 <Pressable
@@ -425,6 +430,7 @@ function GameScreen({ navigation, route }) {
                     pressed && styles.pressed,
                   ]}
                   onPress={handleBrake}
+                  testID="brake-button"
                 >
                   <Image
                     style={styles.brakeImage}
