@@ -71,3 +71,42 @@ export async function signOut(authCtx) {
   authCtx.logout();
   return data;
 }
+
+export async function endGame(vMin, vMax, startAt, endAt, duration, mode){
+  const token = await AsyncStorage.getItem("token");
+
+  mode = mode.toUpperCase();
+  
+  const body = {
+    vMin: vMin,
+    vMax: vMax,
+    startAt: startAt,
+    endAt: endAt,
+    duration: duration,
+    mode: mode
+  };
+
+  const response = await fetch(`${url}api/race`, {
+    method: "POST",
+    headers: { 
+      "Content-type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const data = await response.json();
+
+  console.log(data)
+
+  if (!response.ok) {
+    const error = new Error(
+      data.message ||
+        "Une erreur est survenue lors de la fin de la course. Veuillez réessayer plus tard!"
+    );
+    error.data = data;
+    throw error;
+  }
+
+  return data;
+}
