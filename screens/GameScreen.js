@@ -228,8 +228,8 @@ function GameScreen({ navigation, route }) {
                 : { alignItems: "center" },
             ]}
           >
-            <View style={styles.timerContainer}>
-              <Text style={styles.timerText}>
+            <View style={styles.timerContainer} data-testid="timer-container">
+              <Text style={styles.timerText} data-testid="timer-text">
                 {`${String(hours).padStart(2, "0")}:${String(minutes).padStart(
                   2,
                   "0"
@@ -240,6 +240,7 @@ function GameScreen({ navigation, route }) {
                 size={26}
                 color="white"
                 style={styles.timerIcon}
+                data-testid="timer-icon"
               />
             </View>
             <IconButton
@@ -267,6 +268,7 @@ function GameScreen({ navigation, route }) {
                 library={"FontAwesome"}
                 text="Reset"
                 textStyle={styles.resetButton}
+                testID="cam-reset-button"
               ></IconButton>
             </View>
             <View
@@ -282,6 +284,7 @@ function GameScreen({ navigation, route }) {
                 color={Colors.primary300}
                 onPress={handleCamUp}
                 library={"AntDesign"}
+                testID="cam-up-button"
               ></IconButton>
               <View
                 style={[
@@ -295,6 +298,7 @@ function GameScreen({ navigation, route }) {
                   color={Colors.primary300}
                   onPress={handleCamLeft}
                   library={"AntDesign"}
+                  testID="cam-left-button"
                 ></IconButton>
                 <IconButton
                   icon={"rightcircleo"}
@@ -302,6 +306,7 @@ function GameScreen({ navigation, route }) {
                   color={Colors.primary300}
                   onPress={handleCamRight}
                   library={"AntDesign"}
+                  testID="cam-right-button"
                 ></IconButton>
               </View>
               <IconButton
@@ -310,6 +315,7 @@ function GameScreen({ navigation, route }) {
                 color={Colors.primary300}
                 onPress={handleCamDown}
                 library={"AntDesign"}
+                testID="cam-down-button"
               ></IconButton>
             </View>
             <View style={{ justifyContent: "space-around", height: 95 }}>
@@ -319,6 +325,7 @@ function GameScreen({ navigation, route }) {
                 color={Colors.primary300}
                 onPress={handleSpeedUp}
                 library={"AntDesign"}
+                testID="speed-up-button"
               ></IconButton>
               <IconButton
                 icon={"minuscircle"}
@@ -326,6 +333,7 @@ function GameScreen({ navigation, route }) {
                 color={Colors.primary300}
                 onPress={handleSpeedDown}
                 library={"AntDesign"}
+                testID="speed-down-button"
               ></IconButton>
             </View>
           </View>
@@ -343,6 +351,7 @@ function GameScreen({ navigation, route }) {
                     library={"FontAwesome"}
                     text="Arrêter"
                     textStyle={styles.autoButton}
+                    testID="auto-stop-button"
                   ></IconButton>
                 </View>
               </View>
@@ -376,6 +385,7 @@ function GameScreen({ navigation, route }) {
                 <Image
                   style={styles.speedometerImage}
                   source={require("../assets/gameScreenImages/speedometer.png")}
+                  testID="speedometer-image"
                 ></Image>
                 <View
                   style={[
@@ -383,7 +393,7 @@ function GameScreen({ navigation, route }) {
                     { justifyContent: "center", alignItems: "center" },
                   ]}
                 >
-                  <Text style={styles.speed}>{speed}</Text>
+                  <Text style={styles.speed} testID="speed-text">{speed}</Text>
                 </View>
               </View>
             </View>
@@ -400,6 +410,7 @@ function GameScreen({ navigation, route }) {
                     library={"FontAwesome"}
                     text="Démarrer"
                     textStyle={styles.autoButton}
+                    testID="auto-start-button"
                   ></IconButton>
                 </View>
               </View>
