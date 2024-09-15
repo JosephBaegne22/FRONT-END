@@ -14,7 +14,9 @@ export const ERROR_MESSAGES = {
     USER_NOT_FOUND: "Utilisateur non trouvé.",
     USER_SIGNIN_ERROR: "Erreur lors de la connexion de l'utilisateur.",
     USER_SIGNOUT_ERROR: "Erreur lors de la déconnexion de l'utilisateur.",
-    PWD_RESET_ERROR: "Erreur lors de la réinitialisation du mot de passe."
+    PWD_RESET_ERROR: "Erreur lors de la réinitialisation du mot de passe.",
+    DURATION_REQUIRED: "Vous n'avez pas encore commencer une course!",
+    START_AT_REQUIRED: "Vous n'avez pas encore commencer une course!"
   };
   
   export const SUCCESS_MESSAGES = {
@@ -23,6 +25,7 @@ export const ERROR_MESSAGES = {
     SIGNIN_SUCCESS: "Connexion réussie.",
     USER_OUT: "Utilisateur déconnecté avec succès.",
     USER_RESET_SUCCESS: "Mot de passe réinitialisé avec succès.",
-    USER_FETCHED: "Utilisateur récupéré avec succès."
+    USER_FETCHED: "Utilisateur récupéré avec succès.",
+    RACE_CREATED: "La course a été terminée avec succès."
   };
   
