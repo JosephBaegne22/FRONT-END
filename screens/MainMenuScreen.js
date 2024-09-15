@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, Alert, SafeAreaView } from "re
 
 import { Sizes, FullMenuStyles } from "../constants/styles";
 
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import { signOut } from "../util/auth";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
