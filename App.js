@@ -14,7 +14,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import InGameMenuScreen from "./screens/InGameMenuScreen";
 import GameScreen from "./screens/GameScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
-import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import AuthContextProvider, { AuthContext } from "./store/authContext";
 import { initSocket, closeSocket } from "./util/websocket";
 
 const Stack = createNativeStackNavigator();

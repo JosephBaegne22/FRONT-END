@@ -3,7 +3,7 @@ import { Alert, Dimensions, Platform } from "react-native";
 
 import AuthContent from "../components/auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import { login } from "../util/auth";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../constants/messages";
 

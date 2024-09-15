@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView } from "react-native";
 
 import SettingsForm from "../components/auth/SettingsForm";
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import IconButton from "../components/ui/IconButton";
 import FlatButton from "../components/ui/FlatButton";
 import { Colors, Sizes, FullMenuStyles } from "../constants/styles";

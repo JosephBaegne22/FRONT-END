@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, Alert } from "react-native";
 
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 
 import Button from "../components/ui/Button";
 import { Sizes, FullMenuStyles } from "../constants/styles";

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView, ScrollView } from "react-native";
 
 import IconButton from "../components/ui/IconButton";
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import StatsTable from "../components/tables/StatsTable";
 import { Colors, Sizes, FullMenuStyles } from "../constants/styles";
 

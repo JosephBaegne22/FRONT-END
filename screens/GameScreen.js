@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { WebView } from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
 
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
 import { getSocket } from "../util/websocket";
