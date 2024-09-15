@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { StyleSheet, Text, View, ImageBackground, SafeAreaView } from "react-native";
 
-import { AuthContext } from "../store/auth-context";
+import { AuthContext } from "../store/authContext";
 import Button from "../components/ui/Button";
 import EndGameTable from "../components/tables/EndGameTable";
 import { Sizes, FullMenuStyles } from "../constants/styles";
