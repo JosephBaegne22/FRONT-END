@@ -1,6 +1,7 @@
 import { url } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Fonction générale d'authentification
 async function authenticate(endpoint, params) {
   const { username, password, secretAnswer } = params;
 
@@ -24,7 +25,7 @@ async function authenticate(endpoint, params) {
   if (!response.ok) {
     const error = new Error(
       data.message ||
-        "Une erreur est survenue, veuillez vérifier vos données ou réessayez plus tard !"
+        "Une erreur est survenue, veuillez vérifier vos données ou réessayer plus tard !"
     );
     error.data = data;
     throw error;
@@ -33,18 +34,22 @@ async function authenticate(endpoint, params) {
   return data;
 }
 
+// Créer un utilisateur
 export function createUser(username, password, secretAnswer) {
   return authenticate("api/signup", { username, password, secretAnswer });
 }
 
+// Connexion utilisateur
 export function login(username, password) {
   return authenticate("api/signin", { username, password });
 }
 
+// Réinitialisation du mot de passe
 export function resetPassword(username, password, secretAnswer) {
   return authenticate("api/resetPwd", { username, password, secretAnswer });
 }
 
+// Déconnexion
 export async function signOut(authCtx) {
   const token = await AsyncStorage.getItem("token");
 
@@ -72,41 +77,32 @@ export async function signOut(authCtx) {
   return data;
 }
 
-export async function endGame(vMin, vMax, startAt, endAt, duration, mode){
-  const token = await AsyncStorage.getItem("token");
+// Fonction pour mettre à jour les informations de l'utilisateur (nom d'utilisateur et mot de passe)
+export async function updateUser(username, newPassword, secretAnswer) {
+   const token = await AsyncStorage.getItem("token");
 
-  mode = mode.toUpperCase();
-  
-  const body = {
-    vMin: vMin,
-    vMax: vMax,
-    startAt: startAt,
-    endAt: endAt,
-    duration: duration,
-    mode: mode
-  };
+   const body = {
+      username: username,
+      password: newPassword,
+      secret_answer: secretAnswer,
+   };
 
-  const response = await fetch(`${url}api/race`, {
-    method: "POST",
-    headers: { 
-      "Content-type": "application/json",
-      Authorization: token,
-    },
-    body: JSON.stringify(body),
-  });
+   console.log(body);
 
-  const data = await response.json();
+   const response = await fetch(`${url}/api/user`, {
+      method: "PUT",
+      headers: {
+         "Content-type": "application/json",
+         Authorization: `Bearer ${token}`,  // Ajout du jeton d'accès
+      },
+      body: JSON.stringify(body),
+   });
 
-  console.log(data)
+   const data = await response.json();
 
-  if (!response.ok) {
-    const error = new Error(
-      data.message ||
-        "Une erreur est survenue lors de la fin de la course. Veuillez réessayer plus tard!"
-    );
-    error.data = data;
-    throw error;
-  }
+   if (!response.ok) {
+      throw new Error(data.message || "Erreur lors de la mise à jour des informations utilisateur");
+   }
 
-  return data;
+   return data;
 }
