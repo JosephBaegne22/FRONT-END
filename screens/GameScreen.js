@@ -18,21 +18,23 @@ import { Colors } from "../constants/styles";
 import IconButton from "../components/ui/IconButton";
 import { getSocket } from "../util/websocket";
 import { VIDEO_URL } from "@env";
-import LoadingOverlay from "../components/ui/LoadingOverlay";
 
 function GameScreen({ navigation, route }) {
   const authCtx = useContext(AuthContext);
   const socket = getSocket();
   const [cam_x, setCam_x] = useState(90);
   const [cam_y, setCam_y] = useState(90);
-  const [speed, setSpeed] = useState(2000);
+  const [speed, setSpeed] = useState(route.params?.speed || 2000);
   const [direction, setDirection] = useState("");
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [hours, setHours] = useState(0);
+  const [seconds, setSeconds] = useState(route.params?.seconds || 0);
+  const [minutes, setMinutes] = useState(route.params?.minutes || 0);
+  const [hours, setHours] = useState(route.params?.hours || 0);
   const [start, setStart] = useState(false);
+  const [vMax, setVMax] = useState(2000);
+  const [vMin, setVMin] = useState(2000);
+  const [startAt, setStartAt] = useState(route.params?.startAt || null);
 
-  const { mode } = route.params;
+  const mode = route.params?.mode;
 
   useEffect(() => {
     if (
@@ -143,6 +145,9 @@ function GameScreen({ navigation, route }) {
   const handleSpeedUp = () => {
     if (speed < 4000) {
       setSpeed(speed + 200);
+      if (speed > vMax) {
+        setVMax(speed);
+      }
       switch (direction) {
         case "forward":
           handleForward();
@@ -163,6 +168,9 @@ function GameScreen({ navigation, route }) {
   const handleSpeedDown = () => {
     if (speed > 200) {
       setSpeed(speed - 200);
+      if (speed < vMin) {
+        setVMin(speed);
+      }
       switch (direction) {
         case "forward":
           handleForward();
@@ -182,6 +190,10 @@ function GameScreen({ navigation, route }) {
 
   const handleAutoActivate = () => {
     if (socket && socket.readyState === WebSocket.OPEN && isLoading === false) {
+      const now = new Date();
+      const startAt = now.toISOString();
+      setStartAt(startAt);
+
       sendCommand({ cmd: 10, data: 1 });
       sendCommand({ cmd: 11, data: 1 });
     } else {
@@ -248,8 +260,23 @@ function GameScreen({ navigation, route }) {
               color={Colors.primary300}
               onPress={() =>
                 authCtx.isAuthenticated
-                  ? navigation.replace("AuthInGameMenu", { mode: mode })
-                  : navigation.replace("InGameMenu", { mode: mode })
+                  ? navigation.replace("AuthInGameMenu", {
+                      mode: mode,
+                      seconds: seconds,
+                      minutes: minutes,
+                      hours: hours,
+                      speed: speed,
+                      vMax: vMax,
+                      vMin: vMin,
+                      startAt: startAt,
+                    })
+                  : navigation.replace("InGameMenu", {
+                      mode: mode,
+                      seconds: seconds,
+                      minutes: minutes,
+                      hours: hours,
+                      speed: speed,
+                    })
               }
               library={"Ionicons"}
             ></IconButton>
